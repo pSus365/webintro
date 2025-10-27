@@ -1,3 +1,117 @@
-h1 {
-    color: blue;
+/* body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+form {
+    background-color: bisque;
+    border-radius: 1rem;
+    padding: 1.5 rem;
+
+    width: 45vw;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    flex-direction: column;
+
+
+} */
+
+:root {
+    --primary-blue: #007bff; /* Główny błękitny kolor */
+    --light-blue: #e7f3ff; /* Jasny błękitny dla tła inputów */
+    --text-color: #333; 
+    --border-color: #ced4da; 
+    --shadow-color: rgba(0, 0, 0, 0.15); /* Mocniejszy cień */
+    --form-bg: #ffffff; 
+    --form-width: 400px;
+    --spacing-md: 1.5rem;
+    --spacing-sm: 1rem;
+}
+
+body {
+    margin: 0; 
+    min-height: 100vh; 
+    display: flex;
+    justify-content: center; /* Centruje w poziomie */
+    align-items: center; /* Centruje w pionie */
+    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; 
+    background-color: #f0f2f5; 
+}
+
+/* KONTENER: Centruje i grupuje nagłówek i formularz */
+.login-container {
+    display: flex;
+    flex-direction: column; /* Ustawia elementy jeden pod drugim */
+    align-items: center; /* Centruje poziomo nagłówek i formularz */
+    padding: 2rem;
+}
+
+/* NAGŁÓWEK: Prosty nagłówek strony logowania */
+.login-header {
+    font-size: 2.2rem;
+    font-weight: 700; /* Pogrubiony */
+    color: var(--primary-blue); /* Główny błękitny kolor */
+    margin-bottom: var(--spacing-md);
+    letter-spacing: 1px; /* Lepszy wygląd */
+}
+
+/* FORMULARZ: Czysty biały box */
+form {
+    background-color: var(--form-bg); 
+    border-radius: var(--spacing-sm); 
+    padding: var(--spacing-md);
+    width: var(--form-width); 
+    max-width: 90%; 
+    display: flex;
+    flex-direction: column;
+    align-items: stretch; 
+    box-shadow: 0 8px 25px var(--shadow-color); /* Wyraźniejszy cień */
+}
+
+/* Grupa Inputów */
+.form-group {
+    margin-bottom: var(--spacing-sm); 
+}
+
+/* Inputy */
+input[type="email"],
+input[type="password"] {
+    width: 100%; 
+    padding: 0.8rem var(--spacing-sm);
+    border: 1px solid var(--border-color);
+    border-radius: 0.25rem;
+    font-size: 1rem;
+    color: var(--text-color);
+    background-color: #fff; /* Białe tło */
+    transition: border-color 0.2s; 
+}
+
+input[type="email"]:focus,
+input[type="password"]:focus {
+    border-color: var(--primary-blue); 
+    outline: 0;
+    box-shadow: 0 0 0 0.15rem rgba(0, 123, 255, 0.25); /* Delikatny niebieski cień */
+}
+
+/* Przycisk LOGIN */
+button[type="submit"] {
+    width: 100%; 
+    padding: 0.8rem var(--spacing-md);
+    background-color: var(--primary-blue); 
+    color: white;
+    border: none;
+    border-radius: 0.25rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s; 
+    margin-top: var(--spacing-sm); 
+}
+
+button[type="submit"]:hover {
+    background-color: #0056b3; 
 }
