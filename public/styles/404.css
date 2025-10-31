@@ -1,3 +1,74 @@
-h1 {
-    color: purple;
+/* ===================== */
+/* Podstawowe zmienne    */
+/* ===================== */
+:root {
+    --blue: #007bff;
+    --blue-dark: #0056b3;
+    --text-dark: #222;
+    --shadow: rgba(0, 0, 0, 0.18);
+    --bg: #f8f9fb;
+    --radius: 10px;
+}
+
+/* ===================== */
+/* Ustawienia strony     */
+/* ===================== */
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text-dark);
+}
+
+/* ===================== */
+/* KONTENER 404          */
+/* ===================== */
+.error-box {
+    text-align: center;
+    background: white;
+    padding: 2.5rem 3rem;
+    border-radius: var(--radius);
+    box-shadow: 0 8px 25px var(--shadow);
+    animation: fadeIn 0.4s ease;
+}
+
+/* Duży numer 404 */
+.error-box .code {
+    font-size: 6rem;
+    font-weight: 900;
+    color: var(--blue);
+    margin: 0 0 0.5rem 0;
+}
+
+/* Tekst pod spodem */
+.error-box .message {
+    font-size: 1.25rem;
+    margin-bottom: 1.8rem;
+    opacity: 0.85;
+}
+
+/* Przycisk powrotu */
+.error-box a {
+    display: inline-block;
+    padding: 0.8rem 1.6rem;
+    background: var(--blue);
+    color: white;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: 0.2s;
+}
+
+.error-box a:hover {
+    background: var(--blue-dark);
+}
+
+/* Proste wejście animacyjne */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to   { opacity: 1; transform: translateY(0); }
 }

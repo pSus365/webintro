@@ -39,7 +39,6 @@ class Routing {
         break;
 
        default:
-           echo "<h1>H1 404</h1>";
            include 'public/views/404.html';
            break;
     }
