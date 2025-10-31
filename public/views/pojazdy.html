@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pojazdy</title>
+  <link rel="stylesheet" href="./public/styles/dashboard.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="brand-name">TransMaster</span></div>
+    <nav class="menu">
+      <a href="/dashboard">Dashboard</a>
+      <a class="active" href="/pojazdy">Pojazdy</a>
+      <a href="/kierowcy">Kierowcy</a>
+      <a href="/zlecenia">Zlecenia</a>
+      <a href="/ustawienia">Ustawienia</a>
+    </nav>
+    <div class="user"><button class="bell">🔔</button><img class="avatar" src="https://i.pravatar.cc/40?img=5" alt=""></div>
+  </header>
+
+  <main class="container">
+    <section class="page-head">
+      <h1>Pojazdy</h1>
+      <p>Lista pojazdów i podstawowe parametry.</p>
+    </section>
+
+    <section class="toolbar">
+      <div class="search">
+        <input type="text" placeholder="Szukaj pojazdu…" />
+      </div>
+      <a class="btn-primary" href="#">+ Dodaj pojazd</a>
+    </section>
+
+    <section class="tabs">
+      <a class="tab active" href="#">Wszystkie</a>
+      <a class="tab" href="#">Aktywne</a>
+      <a class="tab" href="#">Nieaktywne</a>
+    </section>
+
+    <section class="panel">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Numer rejestracyjny</th>
+              <th>Marka</th>
+              <th>Model</th>
+              <th>Typ</th>
+              <th>Status</th>
+              <th>Ostatni przegląd</th>
+              <th>Następny przegląd</th>
+              <th>Akcje</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a href="#">GD 12345</a></td><td>Volvo</td><td>FH</td><td>Ciężarówka</td>
+              <td><span class="badge green">Aktywny</span></td><td>2023-01-15</td><td>2024-01-15</td>
+              <td><a class="action" href="#">Edytuj</a></td>
+            </tr>
+            <tr>
+              <td><a href="#">KR 67890</a></td><td>Scania</td><td>R450</td><td>Ciągnik siodłowy</td>
+              <td><span class="badge green">Aktywny</span></td><td>2023-02-20</td><td>2024-02-20</td>
+              <td><a class="action" href="#">Edytuj</a></td>
+            </tr>
+            <tr>
+              <td><a href="#">WZ 77889</a></td><td>DAF</td><td>XF</td><td>Ciężarówka</td>
+              <td><span class="badge red">Nieaktywny</span></td><td>2022-12-01</td><td>2023-12-01</td>
+              <td><a class="action" href="#">Edytuj</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

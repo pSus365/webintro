@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zlecenia</title>
+  <link rel="stylesheet" href="./public/styles/dashboard.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><span class="brand-name">TransMaster</span></div>
+  <nav class="menu">
+    <a href="/dashboard">Dashboard</a>
+    <a href="/pojazdy">Pojazdy</a>
+    <a href="/kierowcy">Kierowcy</a>
+    <a class="active" href="/zlecenia">Zlecenia</a>
+    <a href="/ustawienia">Ustawienia</a>
+  </nav>
+  <div class="user"><button class="bell">🔔</button><img class="avatar" src="https://i.pravatar.cc/40?img=7" alt=""></div>
+</header>
+
+<main class="container">
+  <section class="page-head"><h1>Zlecenia</h1><p>Otwarte, aktualne i ukończone zlecenia.</p></section>
+
+  <section class="toolbar">
+    <div class="search"><input type="text" placeholder="Szukaj zlecenia…" /></div>
+    <a class="btn-primary" href="#">+ Nowe zlecenie</a>
+  </section>
+
+  <section class="tabs">
+    <a class="tab active" href="#">Otwarte</a>
+    <a class="tab" href="#">Aktualne</a>
+    <a class="tab" href="#">Ukończone</a>
+  </section>
+
+  <section class="panel">
+    <div class="table-wrap"><table>
+      <thead><tr>
+        <th>Numer</th><th>Data utworzenia</th><th>Pojazd</th><th>Kierowca</th><th>Status</th><th>Wynagrodzenie</th>
+      </tr></thead>
+      <tbody>
+        <tr><td><a href="#">#12345</a></td><td>2024-01-15</td><td>Mercedes Actros</td><td>Jan Kowalski</td><td><span class="badge blue">Oczekujące</span></td><td>1500 PLN</td></tr>
+        <tr><td><a href="#">#12346</a></td><td>2024-01-16</td><td>Scania R450</td><td>Piotr Nowak</td><td><span class="badge blue">Oczekujące</span></td><td>1800 PLN</td></tr>
+        <tr><td><a href="#">#12347</a></td><td>2024-01-17</td><td>Volvo FH</td><td>Anna Wiśniewska</td><td><span class="badge green">W realizacji</span></td><td>2000 PLN</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+</main>
+</body>
+</html>

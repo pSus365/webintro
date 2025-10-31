@@ -1,13 +1,105 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="public/styles/dashboard.css">
-    <script src="public/scripts/main.js" defer></script>
-    <title>Dashboard</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard</title>
+  <!-- zgodnie z Twoją konwencją -->
+  <link rel="stylesheet" href="./public/styles/dashboard.css"/>
 </head>
 <body>
-    <h1>Dashboard</h1>
+
+  <!-- NAVBAR (identyczny jak na innych podstronach) -->
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-name">TransMaster</span>
+    </div>
+
+    <nav class="menu">
+      <a class="active" href="/dashboard">Dashboard</a>
+      <a href="/pojazdy">Pojazdy</a>
+      <a href="/kierowcy">Kierowcy</a>
+      <a href="/zlecenia">Zlecenia</a>
+      <a href="/ustawienia">Ustawienia</a>
+    </nav>
+
+    <div class="user">
+      <button class="bell" aria-label="Powiadomienia">🔔</button>
+      <img class="avatar" src="https://i.pravatar.cc/40?img=5" alt="Profil"/>
+    </div>
+  </header>
+
+  <!-- GŁÓWNA SEKCJA -->
+  <main class="container">
+    <section class="page-head">
+      <h1>Przegląd floty</h1>
+      <p>Monitoruj status pojazdów i nadchodzące przeglądy.</p>
+    </section>
+
+    <!-- KAFELKI -->
+    <section class="cards">
+      <article class="card">
+        <div class="card-icon">🚐</div>
+        <div>
+          <p class="card-label">Dostępne pojazdy</p>
+          <p class="card-value">12</p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-icon">🚚</div>
+        <div>
+          <p class="card-label">W trasie</p>
+          <p class="card-value">8</p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-icon key">🔧</div>
+        <div>
+          <p class="card-label">W serwisie</p>
+          <p class="card-value warn">2</p>
+        </div>
+      </article>
+    </section>
+
+    <!-- TABELA -->
+    <section class="panel">
+      <h2>Nadchodzące przeglądy</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Pojazd</th>
+              <th>Typ</th>
+              <th>Termin</th>
+              <th>Szacunkowy koszt</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a href="#">Truck 1</a></td>
+              <td>Ciężarowy</td>
+              <td>2025-08-15</td>
+              <td>500 zł</td>
+            </tr>
+            <tr>
+              <td><a href="#">Van 2</a></td>
+              <td>Dostawczy</td>
+              <td>2025-08-22</td>
+              <td>300 zł</td>
+            </tr>
+            <tr>
+              <td><a href="#">Truck 3</a></td>
+              <td>Ciężarowy</td>
+              <td>2025-09-05</td>
+              <td>700 zł</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
 </body>
-</html> 
+</html>

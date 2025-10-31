@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ustawienia</title>
+  <link rel="stylesheet" href="./public/styles/dashboard.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><span class="brand-name">TransMaster</span></div>
+  <nav class="menu">
+    <a href="/dashboard">Dashboard</a>
+    <a href="/pojazdy">Pojazdy</a>
+    <a href="/kierowcy">Kierowcy</a>
+    <a href="/zlecenia">Zlecenia</a>
+    <a class="active" href="/ustawienia">Ustawienia</a>
+  </nav>
+  <div class="user"><button class="bell">🔔</button><img class="avatar" src="https://i.pravatar.cc/40?img=8" alt=""></div>
+</header>
+
+<main class="container">
+  <section class="page-head"><h1>Ustawienia</h1><p>Konfiguracja aplikacji i preferencje konta.</p></section>
+
+  <section class="panel settings-grid">
+    <div class="setting-row">
+      <label>Język</label>
+      <select><option>Polski</option><option>English</option></select>
+    </div>
+    <div class="setting-row">
+      <label>Strefa czasowa</label>
+      <select><option>Europe/Warsaw</option><option>UTC</option></select>
+    </div>
+    <div class="setting-row">
+      <label>Motyw</label>
+      <select><option>Jasny</option><option>Ciemny</option></select>
+    </div>
+    <div class="setting-actions">
+      <button class="btn-primary">Zapisz</button>
+    </div>
+  </section>
+</main>
+</body>
+</html>

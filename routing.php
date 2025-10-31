@@ -1,46 +1,50 @@
 <?php
-
 require_once 'src/controllers/SecurityController.php';
 
 class Routing {
     public static $routes = [
-        "login" => [
-            "controller" => "SecurityController",
-            "action" => "login"
-        ],
-        "dashboard" => [
-            "controller" => "DashboardController",
-            "action" => "dashboard"
-        ]
-        ];
+        "login"     => ["controller" => "SecurityController",  "action" => "login"],
+        "dashboard" => ["controller" => "DashboardController", "action" => "dashboard"],
+        "pojazdy"   => ["controller" => "DashboardController", "action" => "vehicles"],   // na razie widok statyczny
+        "kierowcy"  => ["controller" => "DashboardController", "action" => "drivers"],
+        "zlecenia"  => ["controller" => "DashboardController", "action" => "orders"],
+        "ustawienia"=> ["controller" => "DashboardController", "action" => "settings"],
+    ];
 
     public static function run(string $path) {
         switch ($path) {
             case 'dashboard':
-            // TODO: conect with databsse
-            // get elements to present on dashboard
-           echo "<h1>H1 Dashboard</h1>";
-           include 'public/views/dashboard.html';
-           break;
+                include 'public/views/dashboard.html';
+                break;
 
-       case 'login':
-       case 'register':
-        // TODO: get from form user email and password
-        // check in database if user exists
-        //if user exists, redirect to dashboard
-        //if user does not exist, show error message
-        $controller = Routing::$routes[$path]["controller"];
-        $action = Routing::$routes[$path]["action"];
-        
-        $controllerObj=new $controller;
-        $controllerObj->$action();
+            case 'pojazdy':
+                include 'public/views/pojazdy.html';
+                break;
 
-           
-        break;
+            case 'kierowcy':
+                include 'public/views/kierowcy.html';
+                break;
 
-       default:
-           include 'public/views/404.html';
-           break;
+            case 'zlecenia':
+                include 'public/views/zlecenia.html';
+                break;
+
+            case 'ustawienia':
+                include 'public/views/ustawienia.html';
+                break;
+
+            case 'login':
+            case 'register':
+                $controller = Routing::$routes[$path]["controller"];
+                $action     = Routing::$routes[$path]["action"];
+                $controllerObj = new $controller;
+                $controllerObj->$action();
+                break;
+
+            default:
+                http_response_code(404);
+                include 'public/views/404.html';
+                break;
+        }
     }
-}
 }

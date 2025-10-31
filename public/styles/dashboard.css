@@ -1,3 +1,169 @@
-h1 {
-    color: red;
-}
+/* ========= Zmienne ========= */
+:root{
+    --blue:#0d6efd;
+    --blue-600:#0b5ed7;
+    --text:#1f2937;        /* szary 800 */
+    --muted:#6b7280;       /* szary 500 */
+    --bg:#f3f4f6;          /* tło strony */
+    --card:#ffffff;
+    --ring:rgba(13,110,253,.15);
+    --shadow:0 10px 30px rgba(0,0,0,.08);
+    --radius:12px;
+  }
+  
+  /* ========= Reset/strona ========= */
+  *{ box-sizing:border-box }
+  html,body{ height:100% }
+  
+  /* ✅ Zapobiega „przeskokom” nawigacji między stronami */
+  html{ overflow-y: scroll; }
+  
+  body{
+    margin:0;
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+    color:var(--text);
+    background:var(--bg);
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+  }
+  
+  /* ========= Navbar ========= */
+  .topbar{
+    position:sticky; top:0; z-index:10;
+    display:flex; align-items:center; justify-content:space-between;
+    gap:1rem;
+    height:64px; padding:0 20px;
+    background:#fff; box-shadow:var(--shadow);
+    width:100%;
+  }
+  
+  .brand{ display:flex; align-items:center; gap:10px }
+  .logo{ font-size:22px; color:var(--blue) }
+  .brand-name{ font-weight:700 }
+  
+  .menu{ display:flex; gap:18px }
+  .menu a{
+    text-decoration:none; color:#4b5563; font-weight:600;
+    padding:8px 6px; border-radius:8px;
+    transition:background .15s ease, color .15s ease;
+  }
+  .menu a:hover{ background:#eef2ff }
+  .menu a.active{ color:var(--blue) }
+  
+  /* prawa część */
+  .user{ display:flex; align-items:center; gap:10px }
+  .bell{
+    border:0; background:#eef2ff; padding:8px; border-radius:10px; cursor:pointer;
+  }
+  .bell:hover{ background:#e0e7ff }
+  .avatar{ width:36px; height:36px; border-radius:50% }
+  
+  /* ========= Główna zawartość ========= */
+  .container{ max-width:1080px; margin:28px auto; padding:0 20px }
+  
+  .page-head h1{ margin:0 0 6px; font-size:32px }
+  .page-head p{ margin:0; color:var(--muted) }
+  
+  /* ========= Kafelki ========= */
+  .cards{
+    display:grid; grid-template-columns:repeat(3,1fr);
+    gap:20px; margin:22px 0 28px;
+  }
+  .card{
+    display:flex; align-items:center; gap:16px;
+    background:var(--card); padding:18px 20px; border-radius:12px;
+    box-shadow:var(--shadow);
+  }
+  .card-icon{
+    display:grid; place-items:center;
+    width:44px; height:44px; border-radius:10px;
+    background:#e8f5ff; color:#1e88e5; font-size:22px;
+  }
+  .card-icon.key{ background:#fff8e1; color:#f59e0b }
+  .card-label{ margin:0; color:var(--muted) }
+  .card-value{ margin:2px 0 0; font-weight:800; font-size:28px; color:#0b5ed7 }
+  .card-value.warn{ color:#f59e0b }
+  
+  /* ========= Panel + tabela ========= */
+  .panel{
+    background:var(--card); border-radius:var(--radius);
+    box-shadow:var(--shadow); padding:18px;
+  }
+  .panel h2{ margin:6px 4px 14px }
+  
+  .table-wrap{ overflow:auto }
+  table{ width:100%; border-collapse:collapse; font-size:15px }
+  thead th{
+    text-align:left; font-weight:700; background:#f9fafb; padding:12px;
+    border-bottom:1px solid #e5e7eb;
+  }
+  tbody td{ padding:12px; border-bottom:1px solid #eef2f7 }
+  tbody tr:hover{ background:#fafafa }
+  tbody a{ color:var(--blue); text-decoration:none }
+  tbody a:hover{ text-decoration:underline }
+  
+  /* ========= Pasek narzędzi nad tabelą ========= */
+  .toolbar{
+    display:flex; justify-content:space-between; align-items:center;
+    gap:12px; margin:16px 0;
+  }
+  .search input{
+    width:420px; max-width:100%;
+    padding:10px 12px; border:1px solid #e5e7eb; border-radius:10px;
+    outline:none; transition: box-shadow .15s ease, border-color .15s ease;
+  }
+  .search input:focus{
+    box-shadow:0 0 0 3px rgba(13,110,253,.15);
+    border-color:#cfe2ff;
+  }
+  
+  /* ========= Zakładki ========= */
+  .tabs{ display:flex; gap:18px; margin:6px 0 12px }
+  .tab{
+    padding:10px 2px; border-bottom:2px solid transparent;
+    color:#4b5563; text-decoration:none; font-weight:600;
+    transition:border-color .15s ease, color .15s ease;
+  }
+  .tab.active{ color:#0d6efd; border-color:#0d6efd }
+  
+  /* ========= Badge/statusy ========= */
+  .badge{
+    display:inline-block; padding:4px 10px; border-radius:999px;
+    font-size:.85rem; font-weight:700; line-height:1;
+  }
+  .badge.green{ background:#e7f8ec; color:#198754 }
+  .badge.red{   background:#fde7ea; color:#dc3545 }
+  .badge.blue{  background:#e7f1ff; color:#0d6efd }
+  .badge.gray{  background:#f1f5f9; color:#64748b }
+  
+  /* ========= Link akcji ========= */
+  a.action{ color:#0d6efd; text-decoration:none; font-weight:600 }
+  a.action:hover{ text-decoration:underline }
+  
+  /* ========= Przyciski ========= */
+  .btn-primary{
+    display:inline-block; padding:10px 14px; border-radius:10px;
+    background:#0d6efd; color:#fff; text-decoration:none; font-weight:700;
+    box-shadow:0 6px 16px rgba(13,110,253,.25);
+    transition: background .15s ease;
+  }
+  .btn-primary:hover{ background:#0b5ed7 }
+  
+  /* ========= Ustawienia ========= */
+  .settings-grid{ display:grid; gap:14px }
+  .setting-row{
+    display:flex; gap:14px; align-items:center; justify-content:space-between;
+    padding:8px 0; border-bottom:1px solid #f1f5f9;
+  }
+  .setting-row label{ font-weight:600 }
+  .setting-row select{
+    padding:10px 12px; border:1px solid #e5e7eb; border-radius:10px;
+  }
+  .setting-actions{ display:flex; justify-content:flex-end; padding-top:10px }
+  
+  /* ========= Responsywność ========= */
+  @media (max-width:900px){
+    .cards{ grid-template-columns:1fr }
+    .menu{ display:none } /* prosto: chowamy menu na mniejszych ekranach */
+  }
+  

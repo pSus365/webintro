@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kierowcy</title>
+  <link rel="stylesheet" href="./public/styles/dashboard.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><span class="brand-name">TransMaster</span></div>
+  <nav class="menu">
+    <a href="/dashboard">Dashboard</a>
+    <a href="/pojazdy">Pojazdy</a>
+    <a class="active" href="/kierowcy">Kierowcy</a>
+    <a href="/zlecenia">Zlecenia</a>
+    <a href="/ustawienia">Ustawienia</a>
+  </nav>
+  <div class="user"><button class="bell">🔔</button><img class="avatar" src="https://i.pravatar.cc/40?img=6" alt=""></div>
+</header>
+
+<main class="container">
+  <section class="page-head"><h1>Kierowcy</h1><p>Lista kierowców i status uprawnień.</p></section>
+
+  <section class="toolbar">
+    <div class="search"><input type="text" placeholder="Szukaj pracownika…" /></div>
+    <a class="btn-primary" href="#">+ Dodaj pracownika</a>
+  </section>
+
+  <section class="tabs">
+    <a class="tab active" href="#">Wszyscy</a>
+    <a class="tab" href="#">Aktywni</a>
+    <a class="tab" href="#">Nieaktywni</a>
+  </section>
+
+  <section class="panel">
+    <div class="table-wrap"><table>
+      <thead><tr>
+        <th>Imię i nazwisko</th><th>Status</th><th>Uprawnienia</th><th>Szkolenia</th><th>Akcje</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td><a href="#">Jan Kowalski</a></td>
+          <td><span class="badge blue">W trasie</span></td>
+          <td>C+E</td><td>Tachograf</td><td><a class="action" href="#">Edytuj</a></td>
+        </tr>
+        <tr>
+          <td><a href="#">Anna Nowak</a></td>
+          <td><span class="badge green">Gotowa do jazdy</span></td>
+          <td>B</td><td>Pierwsza pomoc</td><td><a class="action" href="#">Edytuj</a></td>
+        </tr>
+        <tr>
+          <td><a href="#">Piotr Wiśniewski</a></td>
+          <td><span class="badge gray">W spoczynku</span></td>
+          <td>C</td><td>Bezpieczeństwo jazdy</td><td><a class="action" href="#">Edytuj</a></td>
+        </tr>
+      </tbody>
+    </table></div>
+  </section>
+</main>
+</body>
+</html>
