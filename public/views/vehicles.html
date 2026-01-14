@@ -50,19 +50,23 @@
             <main class="content-area">
                 <div class="page-header-row">
                     <h1 class="page-title">Pojazdy</h1>
-                    <button class="btn-primary">
+                    <a href="/add-vehicle" class="btn-primary" style="text-decoration: none;">
                         <span class="material-symbols-outlined" style="font-size: 1.25rem;">add</span>
                         <span>Dodaj pojazd</span>
-                    </button>
+                    </a>
                 </div>
 
                 <div class="controls-section">
-                    <div class="search-wrapper">
+                    <form class="search-wrapper" action="/vehicles" method="GET">
                         <div class="search-icon">
                             <span class="material-symbols-outlined">search</span>
                         </div>
-                        <input class="search-input" placeholder="Szukaj pojazdu" type="text" />
-                    </div>
+                        <input class="search-input" name="search" placeholder="Szukaj pojazdu" type="text"
+                            value="<?= $search ?? '' ?>" />
+                        <?php if(isset($currentFilter) && $currentFilter !== 'all'): ?>
+                        <input type="hidden" name="filter" value="<?= $currentFilter ?>">
+                        <?php endif; ?>
+                    </form>
 
                     <div class="tabs-wrapper">
                         <a class="tab-link <?= (!isset($currentFilter) || $currentFilter === 'all') ? 'active' : '' ?>"
@@ -114,7 +118,14 @@
                                         <?= $vehicle['estimated_service_cost']; ?> PLN
                                     </td>
                                     <td>
-                                        <a class="action-link" href="#">Edytuj</a>
+                                    <td style="display: flex; gap: 0.5rem;">
+                                        <a class="action-link" href="/edit-vehicle?id=<?= $vehicle['id']; ?>">Edytuj</a>
+                                        <form action="/delete-vehicle" method="POST"
+                                            onsubmit="return confirm('Czy na pewno chcesz usunąć ten pojazd?');">
+                                            <input type="hidden" name="id" value="<?= $vehicle['id']; ?>">
+                                            <button type="submit" class="action-link"
+                                                style="background: none; border: none; cursor: pointer; color: var(--red-text);">Usuń</button>
+                                        </form>
                                     </td>
                                 </tr>
                                 <?php endforeach; ?>

@@ -18,6 +18,18 @@ class Routing
         "vehicles" => [
             "controller" => "VehicleController",
             "action" => "index"
+        ],
+        "add-vehicle" => [
+            "controller" => "VehicleController",
+            "action" => "addVehicle"
+        ],
+        "edit-vehicle" => [
+            "controller" => "VehicleController",
+            "action" => "editVehicle"
+        ],
+        "delete-vehicle" => [
+            "controller" => "VehicleController",
+            "action" => "deleteVehicle"
         ]
     ];
 
@@ -32,6 +44,21 @@ class Routing
             case 'vehicles':
                 $controller = new VehicleController();
                 $controller->index();
+                break;
+
+            case 'add-vehicle':
+                $controller = new VehicleController();
+                $controller->addVehicle();
+                break;
+
+            case 'edit-vehicle':
+                $controller = new VehicleController();
+                $controller->editVehicle();
+                break;
+
+            case 'delete-vehicle':
+                $controller = new VehicleController();
+                $controller->deleteVehicle();
                 break;
 
             case 'login':

@@ -36,4 +36,67 @@ class VehicleRepository extends Repository
 
         return $stats;
     }
+
+    public function getVehicle(int $id)
+    {
+        $stmt = $this->database->connect()->prepare('
+            SELECT * FROM vehicles WHERE id = :id
+        ');
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $vehicle = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($vehicle == false) {
+            return null;
+        }
+
+        return $vehicle;
+    }
+
+    public function addVehicle(array $vehicle): void
+    {
+        // $vehicle array structure: name, type, mileage, next_service_date, estimated_service_cost, status
+        $stmt = $this->database->connect()->prepare('
+            INSERT INTO vehicles (name, type, mileage, next_service_date, estimated_service_cost, status)
+            VALUES (?, ?, ?, ?, ?, ?)
+        ');
+
+        $stmt->execute([
+            $vehicle['name'],
+            $vehicle['type'],
+            $vehicle['mileage'],
+            $vehicle['next_service_date'],
+            $vehicle['estimated_service_cost'],
+            $vehicle['status']
+        ]);
+    }
+
+    public function updateVehicle(int $id, array $vehicle): void
+    {
+        $stmt = $this->database->connect()->prepare('
+            UPDATE vehicles 
+            SET name = ?, type = ?, mileage = ?, next_service_date = ?, estimated_service_cost = ?, status = ?
+            WHERE id = ?
+        ');
+
+        $stmt->execute([
+            $vehicle['name'],
+            $vehicle['type'],
+            $vehicle['mileage'],
+            $vehicle['next_service_date'],
+            $vehicle['estimated_service_cost'],
+            $vehicle['status'],
+            $id
+        ]);
+    }
+
+    public function deleteVehicle(int $id): void
+    {
+        $stmt = $this->database->connect()->prepare('
+            DELETE FROM vehicles WHERE id = :id
+        ');
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+    }
 }
