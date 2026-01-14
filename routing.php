@@ -5,6 +5,7 @@ require_once 'src/controllers/DashboardController.php';
 require_once 'src/controllers/VehicleController.php';
 require_once 'src/controllers/DriverController.php';
 require_once 'src/controllers/MaintenanceController.php';
+require_once 'src/controllers/ReportsController.php';
 
 class Routing
 {
@@ -56,6 +57,10 @@ class Routing
         "maintenance/stats" => [
             "controller" => "MaintenanceController",
             "action" => "stats"
+        ],
+        "raports" => [
+            "controller" => "ReportsController",
+            "action" => "index"
         ]
     ];
 
@@ -115,6 +120,11 @@ class Routing
             case 'maintenance/stats':
                 $controller = new MaintenanceController();
                 $controller->stats();
+                break;
+
+            case 'raports':
+                $controller = new ReportsController();
+                $controller->index();
                 break;
 
             case 'login':
