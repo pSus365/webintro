@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link crossorigin="" href="https://fonts.gstatic.com/" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <title>Stitch Design - Statystyki Utrzymania</title>
+    <link href="data:image/x-icon;base64," rel="icon" type="image/x-icon" />
+    <link rel="stylesheet" href="../public/styles/maintenance.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <div class="app-container">
+        <div class="main-wrapper">
+            <!-- Header (Reused) -->
+            <header class="top-header">
+                <div class="logo-section">
+                    <div class="logo-icon">
+                        <svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z"></path>
+                            <path d="M12 12L2 7"></path>
+                            <path d="M12 12L22 7"></path>
+                            <path d="M12 12V22"></path>
+                            <path d="M7 4.5L17 9.5"></path>
+                        </svg>
+                    </div>
+                    <h2 class="logo-text">Fleet Manager</h2>
+                </div>
+                <div class="header-actions">
+                    <nav class="main-nav">
+                        <a class="nav-link" href="/dashboard">Dashboard</a>
+                        <a class="nav-link" href="/vehicles">Pojazdy</a>
+                        <a class="nav-link" href="/drivers">Kierowcy</a>
+                        <a class="nav-link active" href="/maintenance">Utrzymanie</a>
+                        <a class="nav-link" href="#">Raporty</a>
+                    </nav>
+                </div>
+            </header>
+
+            <main class="content-area">
+                <div class="page-header-row">
+                    <h1 class="page-title">Statystyki Kosztów</h1>
+                    <a href="/maintenance" class="btn-primary"
+                        style="background-color: var(--text-muted); text-decoration: none;">
+                        <span class="material-symbols-outlined" style="font-size: 1.25rem;">arrow_back</span>
+                        <span>Powrót do tabeli</span>
+                    </a>
+                </div>
+
+                <!-- KPI Cards -->
+                <div class="stats-grid"
+                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                    <div class="stat-card"
+                        style="background: white; padding: 1.5rem; border-radius: 0.75rem; border: 1px solid var(--border-color);">
+                        <div class="stat-content">
+                            <h3 style="color: var(--text-muted); font-size: 0.875rem; font-weight: 500;">
+                                Przewidywany Koszt Całkowity
+                            </h3>
+                            <p style="font-size: 2rem; font-weight: 700; color: var(--text-dark); margin-top: 0.5rem;">
+                                <?= number_format($totalCost, 2, ',', ' ') ?> PLN
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card"
+                        style="background: white; padding: 1.5rem; border-radius: 0.75rem; border: 1px solid var(--border-color);">
+                        <div class="stat-content">
+                            <h3 style="color: var(--text-muted); font-size: 0.875rem; font-weight: 500;">
+                                Średni Koszt na Pojazd
+                            </h3>
+                            <p style="font-size: 2rem; font-weight: 700; color: var(--text-dark); margin-top: 0.5rem;">
+                                <?= ($vehicleCount > 0) ? number_format($totalCost / $vehicleCount, 2, ',', ' ') : 0 ?>
+                                PLN
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card"
+                        style="background: white; padding: 1.5rem; border-radius: 0.75rem; border: 1px solid var(--border-color);">
+                        <div class="stat-content">
+                            <h3 style="color: var(--text-muted); font-size: 0.875rem; font-weight: 500;">
+                                Nadchodzące Przeglądy
+                            </h3>
+                            <p style="font-size: 2rem; font-weight: 700; color: var(--text-dark); margin-top: 0.5rem;">
+                                <?= $upcomingServiceCount ?>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Row -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 1.5rem;">
+
+                    <!-- Expense by Type Chart -->
+                    <div
+                        style="background: white; padding: 1.5rem; border-radius: 0.75rem; border: 1px solid var(--border-color);">
+                        <h3 style="margin-bottom: 1rem; color: var(--text-dark);">Koszty wg Typu Pojazdu</h3>
+                        <canvas id="typeChart"></canvas>
+                    </div>
+
+                    <!-- Projection Chart -->
+                    <div
+                        style="background: white; padding: 1.5rem; border-radius: 0.75rem; border: 1px solid var(--border-color);">
+                        <h3 style="margin-bottom: 1rem; color: var(--text-dark);">Symulacja Kosztów (6 miesięcy)</h3>
+                        <canvas id="projectionChart"></canvas>
+                        <div style="margin-top: 1rem; font-size: 0.875rem; color: var(--text-muted);">
+                            *Symulacja zakłada stały wzrost kosztów eksploatacji.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Projection -->
+                <div
+                    style="margin-top: 1.5rem; background: white; padding: 1.5rem; border-radius: 0.75rem; border: 1px solid var(--border-color);">
+                    <h3 style="margin-bottom: 1rem; color: var(--text-dark);">Kalkulator Prognoz</h3>
+                    <div style="display: flex; gap: 1rem; align-items: flex-end;">
+                        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                            <label for="inflation" style="font-size: 0.875rem; font-weight: 500;">Wzrost cen serwisu
+                                (%)</label>
+                            <input type="number" id="inflation" value="5"
+                                style="padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 0.375rem;">
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                            <label for="months" style="font-size: 0.875rem; font-weight: 500;">Okres (miesiące)</label>
+                            <input type="number" id="months" value="12"
+                                style="padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 0.375rem;">
+                        </div>
+                        <button onclick="calculateProjection()" class="btn-primary">Oblicz</button>
+                    </div>
+                    <p id="calculationResult"
+                        style="margin-top: 1rem; font-size: 1.25rem; font-weight: 500; color: var(--primary-color);">
+                        Kliknij Oblicz, aby zobaczyć prognozę.
+                    </p>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- Chart Scripts -->
+    <script>
+        // Data from PHP
+        const typeLabels = <?= json_encode(array_keys($typeCosts)) ?>;
+        const typeData = <?= json_encode(array_values($typeCosts)) ?>;
+        const totalBaseCost = <?= $totalCost ?>;
+
+        // Type Chart (Pie/Doughnut)
+        const ctxType = document.getElementById('typeChart').getContext('2d');
+        new Chart(ctxType, {
+            type: 'doughnut',
+            data: {
+                labels: typeLabels,
+                datasets: [{
+                    label: 'Koszt (PLN)',
+                    data: typeData,
+                    backgroundColor: [
+                        'rgba(54, 162, 235, 0.6)',
+                        'rgba(255, 99, 132, 0.6)',
+                        'rgba(255, 206, 86, 0.6)',
+                        'rgba(75, 192, 192, 0.6)',
+                    ],
+                    borderColor: [
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                    ],
+                    borderWidth: 1
+                }]
+            }
+        });
+
+        // Projection Chart (Bar)
+        const ctxProj = document.getElementById('projectionChart').getContext('2d');
+        const months = ['M 1', 'M 2', 'M 3', 'M 4', 'M 5', 'M 6'];
+
+        // Simulate cumulative cost accumulation + some monthly variance
+        const projectedData = months.map((_, i) => {
+            const monthlyAvg = totalBaseCost / 6; // Rough monthly average
+            return Math.round(monthlyAvg * (i + 1));
+        });
+
+        new Chart(ctxProj, {
+            type: 'bar',
+            data: {
+                labels: months,
+                datasets: [{
+                    label: 'Skumulowane Wydatki (PLN)',
+                    data: projectedData,
+                    backgroundColor: 'rgba(17, 115, 212, 0.5)',
+                    borderColor: 'rgba(17, 115, 212, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Simple JS Calculator for the form
+        function calculateProjection() {
+            const inflation = parseFloat(document.getElementById('inflation').value) / 100;
+            const months = parseInt(document.getElementById('months').value);
+
+            // Assume totalCost is for a typical service cycle (e.g. 1 year). 
+            // Let's project linear cost + inflation.
+            // Cost per month approx:
+            const monthlyCost = totalBaseCost / 12;
+
+            let futureTotalKey = 0;
+            for (let i = 1; i <= months; i++) {
+                futureTotalKey += monthlyCost * (1 + inflation);
+            }
+
+            document.getElementById('calculationResult').innerText =
+                `Szacowany koszt po ${months} miesiącach (przy inflacji): ${futureTotalKey.toFixed(2)} PLN`;
+        }
+    </script>
+</body>
+
+</html>

@@ -4,6 +4,7 @@ require_once 'src/controllers/SecurityController.php';
 require_once 'src/controllers/DashboardController.php';
 require_once 'src/controllers/VehicleController.php';
 require_once 'src/controllers/DriverController.php';
+require_once 'src/controllers/MaintenanceController.php';
 
 class Routing
 {
@@ -47,6 +48,14 @@ class Routing
         "delete-driver" => [
             "controller" => "DriverController",
             "action" => "deleteDriver"
+        ],
+        "maintenance" => [
+            "controller" => "MaintenanceController",
+            "action" => "index"
+        ],
+        "maintenance/stats" => [
+            "controller" => "MaintenanceController",
+            "action" => "stats"
         ]
     ];
 
@@ -96,6 +105,16 @@ class Routing
             case 'delete-driver':
                 $controller = new DriverController();
                 $controller->deleteDriver();
+                break;
+
+            case 'maintenance':
+                $controller = new MaintenanceController();
+                $controller->index();
+                break;
+
+            case 'maintenance/stats':
+                $controller = new MaintenanceController();
+                $controller->stats();
                 break;
 
             case 'login':
