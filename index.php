@@ -1,5 +1,6 @@
 <?php
 
+require_once 'src/config.php';
 require_once 'Routing.php';
 
 

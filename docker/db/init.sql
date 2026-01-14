@@ -30,3 +30,14 @@ INSERT INTO drivers (first_name, last_name, birth_date, city, street, house_numb
 ('Jan', 'Kowalski', '1980-05-15', 'Warsaw', 'Marszałkowska', '10', '2020-01-01', 'wolny'),
 ('Marek', 'Nowak', '1985-11-20', 'Krakow', 'Floriańska', '15a', '2021-03-10', 'w trasie'),
 ('Anna', 'Wisniewska', '1990-07-08', 'Gdansk', 'Długa', '5', '2019-11-05', 'L4');
+
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    surname VARCHAR(100) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    avatar_url TEXT DEFAULT NULL
+);
+
+INSERT INTO users (name, surname, email, avatar_url) VALUES 
+('Admin', 'User', 'admin@example.com', 'https://lh3.googleusercontent.com/aida-public/AB6AXuBlhEWZ184-VSOg-zDjeb9KI3eiMMc0_bFY3TZbkTUodvFPWhRKzQykX-PfVQjUYL2N6--bSFQJhLl8T1iC5k8cMBMs7P_wOw-JraVmxhBCKvjOJpqCblLOdotlAfiOKOOTGPKqZHrLS8sAgAyPmy-3rcCSwHqgJhB3YVWrgPxeUyFqfmJwYK5ZTiHGqX6kjYd3ZJkte98_4is-PaifRmOa1n0l9XfFXH67MeOXk8zF3Y4MTVWa_p7x5kcb_hEdMuazrH-iN_XY8IN2');

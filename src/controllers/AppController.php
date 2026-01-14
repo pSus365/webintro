@@ -1,5 +1,7 @@
 <?php
 
+
+
 class AppController
 {
 
@@ -8,6 +10,8 @@ class AppController
         $templatePath = 'public/views/' . $template . '.html';
         $templatePath404 = 'public/views/404.html';
         $output = "";
+
+
         if (file_exists($templatePath)) {
             // ["message" => "Bledne haslo lub email"]
             extract($variables);

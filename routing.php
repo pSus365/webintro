@@ -7,6 +7,7 @@ require_once 'src/controllers/DriverController.php';
 require_once 'src/controllers/MaintenanceController.php';
 require_once 'src/controllers/ReportsController.php';
 require_once 'src/controllers/RemindersController.php';
+require_once 'src/controllers/UserController.php';
 
 class Routing
 {
@@ -66,6 +67,18 @@ class Routing
         "reminders" => [
             "controller" => "RemindersController",
             "action" => "index"
+        ],
+        "user" => [
+            "controller" => "UserController",
+            "action" => "profile"
+        ],
+        "user/update" => [
+            "controller" => "UserController",
+            "action" => "update"
+        ],
+        "user/upload-avatar" => [
+            "controller" => "UserController",
+            "action" => "uploadAvatar"
         ]
     ];
 
@@ -135,6 +148,21 @@ class Routing
             case 'reminders':
                 $controller = new RemindersController();
                 $controller->index();
+                break;
+
+            case 'user':
+                $controller = new UserController();
+                $controller->profile();
+                break;
+
+            case 'user/update':
+                $controller = new UserController();
+                $controller->update();
+                break;
+
+            case 'user/upload-avatar':
+                $controller = new UserController();
+                $controller->uploadAvatar();
                 break;
 
             case 'login':
