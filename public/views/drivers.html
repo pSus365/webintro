@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link crossorigin="" href="https://fonts.gstatic.com/" rel="preconnect" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-    <title>Stitch Design - Pojazdy</title>
+    <title>Stitch Design - Kierowcy</title>
     <link href="data:image/x-icon;base64," rel="icon" type="image/x-icon" />
-    <link rel="stylesheet" href="public/styles/vehicles.css">
+    <link rel="stylesheet" href="public/styles/drivers.css">
 </head>
 
 <body>
@@ -31,8 +31,8 @@
                 <div class="header-actions">
                     <nav class="main-nav">
                         <a class="nav-link" href="/dashboard">Dashboard</a>
-                        <a class="nav-link active" href="/vehicles">Pojazdy</a>
-                        <a class="nav-link" href="/drivers">Kierowcy</a>
+                        <a class="nav-link" href="/vehicles">Pojazdy</a>
+                        <a class="nav-link active" href="/drivers">Kierowcy</a>
                         <a class="nav-link" href="#">Utrzymanie</a>
                         <a class="nav-link" href="#">Raporty</a>
                     </nav>
@@ -49,19 +49,19 @@
 
             <main class="content-area">
                 <div class="page-header-row">
-                    <h1 class="page-title">Pojazdy</h1>
-                    <a href="/add-vehicle" class="btn-primary" style="text-decoration: none;">
+                    <h1 class="page-title">Kierowcy</h1>
+                    <a href="/add-driver" class="btn-primary" style="text-decoration: none;">
                         <span class="material-symbols-outlined" style="font-size: 1.25rem;">add</span>
-                        <span>Dodaj pojazd</span>
+                        <span>Dodaj kierowcę</span>
                     </a>
                 </div>
 
                 <div class="controls-section">
-                    <form class="search-wrapper" action="/vehicles" method="GET">
+                    <form class="search-wrapper" action="/drivers" method="GET">
                         <div class="search-icon">
                             <span class="material-symbols-outlined">search</span>
                         </div>
-                        <input class="search-input" name="search" placeholder="Szukaj pojazdu" type="text"
+                        <input class="search-input" name="search" placeholder="Szukaj kierowcy" type="text"
                             value="<?= $search ?? '' ?>" />
                         <?php if(isset($currentFilter) && $currentFilter !== 'all'): ?>
                         <input type="hidden" name="filter" value="<?= $currentFilter ?>">
@@ -70,11 +70,11 @@
 
                     <div class="tabs-wrapper">
                         <a class="tab-link <?= (!isset($currentFilter) || $currentFilter === 'all') ? 'active' : '' ?>"
-                            href="/vehicles?filter=all">Wszystkie</a>
+                            href="/drivers?filter=all">Wszystkie</a>
                         <a class="tab-link <?= (isset($currentFilter) && $currentFilter === 'active') ? 'active' : '' ?>"
-                            href="/vehicles?filter=active">Aktywne</a>
+                            href="/drivers?filter=active">Aktywni</a>
                         <a class="tab-link <?= (isset($currentFilter) && $currentFilter === 'inactive') ? 'active' : '' ?>"
-                            href="/vehicles?filter=inactive">Nieaktywne</a>
+                            href="/drivers?filter=inactive">Nieaktywni</a>
                     </div>
                 </div>
 
@@ -83,47 +83,43 @@
                         <table class="vehicles-table">
                             <thead>
                                 <tr>
-                                    <th>Nazwa</th>
-                                    <th>Typ</th>
+                                    <th>Imię</th>
+                                    <th>Nazwisko</th>
                                     <th>Status</th>
-                                    <th>Przebieg</th>
-                                    <th>Następny Przegląd</th>
-                                    <th>Koszt Serwisu</th>
+                                    <th>Adres</th>
+                                    <th>Data Zatrudnienia</th>
                                     <th>Akcje</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php if(isset($vehicles)): ?>
-                                <?php foreach ($vehicles as $vehicle): ?>
+                                <?php if(isset($drivers)): ?>
+                                <?php foreach ($drivers as $driver): ?>
                                 <tr>
                                     <td class="text-dark font-medium">
-                                        <?= $vehicle['name']; ?>
+                                        <?= $driver['first_name']; ?>
                                     </td>
                                     <td>
-                                        <?= $vehicle['type']; ?>
+                                        <?= $driver['last_name']; ?>
                                     </td>
                                     <td>
                                         <span
-                                            class="status-badge <?= strtolower(str_replace(' ', '-', $vehicle['status'])); ?>">
-                                            <?= $vehicle['status']; ?>
+                                            class="status-badge <?= strtolower(str_replace(' ', '-', $driver['status'])); ?>">
+                                            <?= $driver['status']; ?>
                                         </span>
                                     </td>
                                     <td>
-                                        <?= $vehicle['mileage']; ?> km
+                                        <?= $driver['city'] . ', ' . $driver['street'] . ' ' . $driver['house_number']; ?>
                                     </td>
                                     <td>
-                                        <?= $vehicle['next_service_date']; ?>
-                                    </td>
-                                    <td>
-                                        <?= $vehicle['estimated_service_cost']; ?> PLN
+                                        <?= $driver['employment_date']; ?>
                                     </td>
                                     <td style="display: flex; gap: 0.5rem; white-space: nowrap;">
                                         <a class="action-btn edit"
-                                            href="/edit-vehicle?id=<?= $vehicle['id']; ?>">Edytuj</a>
-                                        <form action="/delete-vehicle" method="POST"
-                                            onsubmit="return confirm('Czy na pewno chcesz usunąć ten pojazd?');"
+                                            href="/edit-driver?id=<?= $driver['id']; ?>">Edytuj</a>
+                                        <form action="/delete-driver" method="POST"
+                                            onsubmit="return confirm('Czy na pewno chcesz usunąć tego kierowcę?');"
                                             style="display: inline;">
-                                            <input type="hidden" name="id" value="<?= $vehicle['id']; ?>">
+                                            <input type="hidden" name="id" value="<?= $driver['id']; ?>">
                                             <button type="submit" class="action-btn delete">Usuń</button>
                                         </form>
                                     </td>
