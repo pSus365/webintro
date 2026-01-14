@@ -1,6 +1,7 @@
 <?php
 
 require_once 'src/controllers/SecurityController.php';
+require_once 'src/controllers/DashboardController.php';
 
 class Routing
 {
@@ -19,22 +20,18 @@ class Routing
     {
         switch ($path) {
             case 'dashboard':
-                // TODO: conect with databsse
-                // get elements to present on dashboard
-                include 'public/views/dashboard.html';
+                $controller = new DashboardController();
+                $controller->dashboard();
                 break;
 
             case 'login':
             case 'register':
-                // TODO: get from form user email and password
-                // check in database if user exists
-                //if user exists, redirect to dashboard
-                //if user does not exist, show error message
                 $controller = Routing::$routes[$path]["controller"];
                 $action = Routing::$routes[$path]["action"];
 
-                $controllerObj = new $controller;
-                $controllerObj->$action();
+                $object = new $controller;
+                $object->$action();
+                break;
 
 
                 break;

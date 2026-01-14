@@ -61,7 +61,9 @@
                                 </div>
                                 <div class="stat-info">
                                     <p>Available Vehicles</p>
-                                    <p>12</p>
+                                    <p>
+                                        <?= $stats['wolny'] ?? 0 ?>
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -74,7 +76,9 @@
                                 </div>
                                 <div class="stat-info">
                                     <p>Vehicles in Transit</p>
-                                    <p>8</p>
+                                    <p>
+                                        <?= $stats['w trasie'] ?? 0 ?>
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -87,7 +91,9 @@
                                 </div>
                                 <div class="stat-info">
                                     <p>Vehicles in Service</p>
-                                    <p>2</p>
+                                    <p>
+                                        <?= $stats['serwis'] ?? 0 ?>
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -104,27 +110,31 @@
                                             <th>Type</th>
                                             <th>Next Service</th>
                                             <th>Estimated Cost</th>
+                                            <th>Status</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        <?php if(isset($vehicles)): ?>
+                                        <?php foreach ($vehicles as $vehicle): ?>
                                         <tr>
-                                            <td class="font-medium">Truck 1</td>
-                                            <td class="text-muted">Heavy Duty</td>
-                                            <td class="text-muted">2024-08-15</td>
-                                            <td class="text-muted">$500</td>
+                                            <td class="font-medium">
+                                                <?= $vehicle['name']; ?>
+                                            </td>
+                                            <td class="text-muted">
+                                                <?= $vehicle['type']; ?>
+                                            </td>
+                                            <td class="text-muted">
+                                                <?= $vehicle['next_service_date']; ?>
+                                            </td>
+                                            <td class="text-muted">$
+                                                <?= $vehicle['estimated_service_cost']; ?>
+                                            </td>
+                                            <td class="text-muted">
+                                                <?= $vehicle['status']; ?>
+                                            </td>
                                         </tr>
-                                        <tr>
-                                            <td class="font-medium">Van 2</td>
-                                            <td class="text-muted">Delivery Van</td>
-                                            <td class="text-muted">2024-08-22</td>
-                                            <td class="text-muted">$300</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="font-medium">Truck 3</td>
-                                            <td class="text-muted">Heavy Duty</td>
-                                            <td class="text-muted">2024-09-05</td>
-                                            <td class="text-muted">$700</td>
-                                        </tr>
+                                        <?php endforeach; ?>
+                                        <?php endif; ?>
                                     </tbody>
                                 </table>
                             </div>
