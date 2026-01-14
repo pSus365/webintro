@@ -173,5 +173,6 @@ Szybki podgląd stanu floty:
 ---
 
 ## 👨‍💻 Autor
-Projekt wykonany w ramach zaliczenia przedmiotu [Nazwa Przedmiotu].
+Autor: pSus365
+Projekt wykonany w ramach zaliczenia przedmiotu Projektowanie Aplikacji Internetowych.
 Wszelkie prawa zastrzeżone.
