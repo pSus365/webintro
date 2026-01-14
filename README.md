@@ -45,10 +45,10 @@ graph TD
     
     subgraph "Warstwa Aplikacji (PHP)"
     Controller -->|Pobierz dane| Repository[Repozytorium]
-    Repository -->|SQL Query| Database[(PostgreSQL)]
+    Repository -->|SQL Query| Database[("PostgreSQL")]
     Database -->|Wynik| Repository
     Repository -->|Obiekt Modelu| Controller
-    Controller -->|Dane + Szablon| View[Widok (HTML/PHP)]
+    Controller -->|Dane + Szablon| View["Widok (HTML/PHP)"]
     end
     
     View -->|Odpowiedź HTML| User
