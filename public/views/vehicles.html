@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link crossorigin="" href="https://fonts.gstatic.com/" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <title>Stitch Design - Pojazdy</title>
+    <link href="data:image/x-icon;base64," rel="icon" type="image/x-icon" />
+    <link rel="stylesheet" href="public/styles/vehicles.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <div class="main-wrapper">
+            <!-- Header (Reused) -->
+            <header class="top-header">
+                <div class="logo-section">
+                    <div class="logo-icon">
+                        <svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z"></path>
+                            <path d="M12 12L2 7"></path>
+                            <path d="M12 12L22 7"></path>
+                            <path d="M12 12V22"></path>
+                            <path d="M7 4.5L17 9.5"></path>
+                        </svg>
+                    </div>
+                    <h2 class="logo-text">Fleet Manager</h2>
+                </div>
+                <div class="header-actions">
+                    <nav class="main-nav">
+                        <a class="nav-link" href="/dashboard">Dashboard</a>
+                        <a class="nav-link active" href="/vehicles">Pojazdy</a>
+                        <a class="nav-link" href="#">Kierowcy</a>
+                        <a class="nav-link" href="#">Utrzymanie</a>
+                        <a class="nav-link" href="#">Raporty</a>
+                    </nav>
+                    <div class="user-actions">
+                        <button class="btn-icon">
+                            <span class="material-symbols-outlined"> notifications </span>
+                        </button>
+                        <div class="user-avatar"
+                            style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBlhEWZ184-VSOg-zDjeb9KI3eiMMc0_bFY3TZbkTUodvFPWhRKzQykX-PfVQjUYL2N6--bSFQJhLl8T1iC5k8cMBMs7P_wOw-JraVmxhBCKvjOJpqCblLOdotlAfiOKOOTGPKqZHrLS8sAgAyPmy-3rcCSwHqgJhB3YVWrgPxeUyFqfmJwYK5ZTiHGqX6kjYd3ZJkte98_4is-PaifRmOa1n0l9XfFXH67MeOXk8zF3Y4MTVWa_p7x5kcb_hEdMuazrH-iN_XY8IN2");'>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <main class="content-area">
+                <div class="page-header-row">
+                    <h1 class="page-title">Pojazdy</h1>
+                    <button class="btn-primary">
+                        <span class="material-symbols-outlined" style="font-size: 1.25rem;">add</span>
+                        <span>Dodaj pojazd</span>
+                    </button>
+                </div>
+
+                <div class="controls-section">
+                    <div class="search-wrapper">
+                        <div class="search-icon">
+                            <span class="material-symbols-outlined">search</span>
+                        </div>
+                        <input class="search-input" placeholder="Szukaj pojazdu" type="text" />
+                    </div>
+
+                    <div class="tabs-wrapper">
+                        <a class="tab-link active" href="#">Wszystkie</a>
+                        <a class="tab-link" href="#">Aktywne</a>
+                        <a class="tab-link" href="#">Nieaktywne</a>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <div class="table-wrapper">
+                        <table class="vehicles-table">
+                            <thead>
+                                <tr>
+                                    <th>Nazwa</th>
+                                    <th>Typ</th>
+                                    <th>Status</th>
+                                    <th>Przebieg</th>
+                                    <th>Następny Przegląd</th>
+                                    <th>Koszt Serwisu</th>
+                                    <th>Akcje</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php if(isset($vehicles)): ?>
+                                <?php foreach ($vehicles as $vehicle): ?>
+                                <tr>
+                                    <td class="text-dark font-medium">
+                                        <?= $vehicle['name']; ?>
+                                    </td>
+                                    <td>
+                                        <?= $vehicle['type']; ?>
+                                    </td>
+                                    <td>
+                                        <span
+                                            class="status-badge <?= strtolower(str_replace(' ', '-', $vehicle['status'])); ?>">
+                                            <?= $vehicle['status']; ?>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <?= $vehicle['mileage']; ?> km
+                                    </td>
+                                    <td>
+                                        <?= $vehicle['next_service_date']; ?>
+                                    </td>
+                                    <td>
+                                        <?= $vehicle['estimated_service_cost']; ?> PLN
+                                    </td>
+                                    <td>
+                                        <a class="action-link" href="#">Edytuj</a>
+                                    </td>
+                                </tr>
+                                <?php endforeach; ?>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -2,6 +2,7 @@
 
 require_once 'src/controllers/SecurityController.php';
 require_once 'src/controllers/DashboardController.php';
+require_once 'src/controllers/VehicleController.php';
 
 class Routing
 {
@@ -13,6 +14,10 @@ class Routing
         "dashboard" => [
             "controller" => "DashboardController",
             "action" => "dashboard"
+        ],
+        "vehicles" => [
+            "controller" => "VehicleController",
+            "action" => "index"
         ]
     ];
 
@@ -22,6 +27,11 @@ class Routing
             case 'dashboard':
                 $controller = new DashboardController();
                 $controller->dashboard();
+                break;
+
+            case 'vehicles':
+                $controller = new VehicleController();
+                $controller->index();
                 break;
 
             case 'login':
