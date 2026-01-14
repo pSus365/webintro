@@ -1,13 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link crossorigin="" href="https://fonts.gstatic.com/" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <title>Stitch Design</title>
+    <link href="data:image/x-icon;base64," rel="icon" type="image/x-icon" />
     <link rel="stylesheet" href="public/styles/dashboard.css">
-    <script src="public/scripts/main.js" defer></script>
-    <title>Dashboard</title>
 </head>
+
 <body>
-    <h1>Dashboard</h1>
+    <div class="app-container">
+        <div class="main-wrapper">
+            <header class="top-header">
+                <div class="logo-section">
+                    <div class="logo-icon">
+                        <svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z"></path>
+                            <path d="M12 12L2 7"></path>
+                            <path d="M12 12L22 7"></path>
+                            <path d="M12 12V22"></path>
+                            <path d="M7 4.5L17 9.5"></path>
+                        </svg>
+                    </div>
+                    <h2 class="logo-text">Fleet Manager</h2>
+                </div>
+                <div class="header-actions">
+                    <nav class="main-nav">
+                        <a class="nav-link active" href="#">Dashboard</a>
+                        <a class="nav-link" href="#">Vehicles</a>
+                        <a class="nav-link" href="#">Drivers</a>
+                        <a class="nav-link" href="#">Maintenance</a>
+                        <a class="nav-link" href="#">Reports</a>
+                    </nav>
+                    <div class="user-actions">
+                        <button class="btn-icon">
+                            <span class="material-symbols-outlined"> notifications </span>
+                        </button>
+                        <div class="user-avatar"
+                            style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBlhEWZ184-VSOg-zDjeb9KI3eiMMc0_bFY3TZbkTUodvFPWhRKzQykX-PfVQjUYL2N6--bSFQJhLl8T1iC5k8cMBMs7P_wOw-JraVmxhBCKvjOJpqCblLOdotlAfiOKOOTGPKqZHrLS8sAgAyPmy-3rcCSwHqgJhB3YVWrgPxeUyFqfmJwYK5ZTiHGqX6kjYd3ZJkte98_4is-PaifRmOa1n0l9XfFXH67MeOXk8zF3Y4MTVWa_p7x5kcb_hEdMuazrH-iN_XY8IN2");'>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <main class="content-area">
+                <div class="content-container">
+                    <div class="page-header">
+                        <h1 class="page-title">Fleet Overview</h1>
+                        <p class="page-subtitle">Monitor the status of your vehicles and upcoming maintenance.</p>
+                    </div>
+
+                    <div class="stats-grid">
+                        <!-- Card 1 -->
+                        <div class="stat-card">
+                            <div class="stat-content">
+                                <div class="stat-icon green">
+                                    <span class="material-symbols-outlined"> directions_car </span>
+                                </div>
+                                <div class="stat-info">
+                                    <p>Available Vehicles</p>
+                                    <p>12</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 2 -->
+                        <div class="stat-card">
+                            <div class="stat-content">
+                                <div class="stat-icon blue">
+                                    <span class="material-symbols-outlined"> local_shipping </span>
+                                </div>
+                                <div class="stat-info">
+                                    <p>Vehicles in Transit</p>
+                                    <p>8</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 3 -->
+                        <div class="stat-card">
+                            <div class="stat-content">
+                                <div class="stat-icon amber">
+                                    <span class="material-symbols-outlined"> build </span>
+                                </div>
+                                <div class="stat-info">
+                                    <p>Vehicles in Service</p>
+                                    <p>2</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section-header">
+                        <h2 class="section-title">Upcoming Maintenance</h2>
+                        <div class="table-container">
+                            <div class="table-wrapper">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Vehicle</th>
+                                            <th>Type</th>
+                                            <th>Next Service</th>
+                                            <th>Estimated Cost</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="font-medium">Truck 1</td>
+                                            <td class="text-muted">Heavy Duty</td>
+                                            <td class="text-muted">2024-08-15</td>
+                                            <td class="text-muted">$500</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="font-medium">Van 2</td>
+                                            <td class="text-muted">Delivery Van</td>
+                                            <td class="text-muted">2024-08-22</td>
+                                            <td class="text-muted">$300</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="font-medium">Truck 3</td>
+                                            <td class="text-muted">Heavy Duty</td>
+                                            <td class="text-muted">2024-09-05</td>
+                                            <td class="text-muted">$700</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
 </body>
-</html> 
+
+</html>
