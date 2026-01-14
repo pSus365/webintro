@@ -7,12 +7,21 @@ class AppController
 
     protected function render(?string $template = null, array $variables = [])
     {
-        $templatePath = 'public/views/' . $template . '.html';
+
+        $templatePathPhp = 'public/views/' . $template . '.php';
+        $templatePathHtml = 'public/views/' . $template . '.html';
         $templatePath404 = 'public/views/404.html';
         $output = "";
 
+        // Determine which file to include
+        $path = $templatePath404;
+        if (file_exists($templatePathPhp)) {
+            $path = $templatePathPhp;
+        } elseif (file_exists($templatePathHtml)) {
+            $path = $templatePathHtml;
+        }
 
-        if (file_exists($templatePath)) {
+        if ($path !== $templatePath404) {
             // Auto-escape variables for XSS protection
             $variables = $this->secureData($variables);
 
@@ -21,7 +30,7 @@ class AppController
             //echo $message; -> klucze staną sie zmiennymi bo tak dziala klasa extract
 
             ob_start();
-            include $templatePath;
+            include $path;
             $output = ob_get_clean();
         } else {
             ob_start();
