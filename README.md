@@ -40,7 +40,7 @@ System oparty jest na autorskim frameworku implementującym wzorzec **Model-View
 ```mermaid
 graph TD
     User((Użytkownik)) -->|Żądanie HTTP| Nginx[Serwer Nginx]
-    Nginx -->|Przekazanie| Routing[Routing (index.php)]
+    Nginx -->|Przekazanie| Routing["Routing (index.php)"]
     Routing -->|Wybór trasy| Controller[Kontroler]
     
     subgraph "Warstwa Aplikacji (PHP)"
@@ -143,8 +143,8 @@ docker-compose up -d --build
 Aplikacja dostępna jest pod adresem: **http://localhost:8080**
 
 ### Domyślne Dane Logowania
-- **Email**: `admin@example.com`
-- **Hasło**: `admin`
+### Domyślne Dane Logowania
+*(Dane usunięte ze względów bezpieczeństwa)*
 
 ---
 
