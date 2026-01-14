@@ -79,11 +79,52 @@ class Routing
         "user/upload-avatar" => [
             "controller" => "UserController",
             "action" => "uploadAvatar"
+        ],
+        "register" => [
+            "controller" => "SecurityController",
+            "action" => "register"
+        ],
+        "logout" => [
+            "controller" => "SecurityController",
+            "action" => "logout"
+        ],
+        "user/password" => [
+            "controller" => "UserController",
+            "action" => "changePassword"
         ]
     ];
 
     public static function run(string $path)
     {
+        // Start session if not started
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        // Default route is login
+        if ($path === '') {
+            if (isset($_SESSION['user_id'])) {
+                header("Location: /dashboard");
+                exit();
+            } else {
+                $path = 'login';
+            }
+        }
+
+        // Protected routes check
+        $publicRoutes = ['login', 'register'];
+        if (!in_array($path, $publicRoutes) && !isset($_SESSION['user_id'])) {
+            header("Location: /login");
+            exit();
+        }
+
+        // Loop redirect prevention for logged in users
+        if (($path === 'login' || $path === 'register') && isset($_SESSION['user_id'])) {
+            header("Location: /dashboard");
+            exit();
+        }
+
+
         switch ($path) {
             case 'dashboard':
                 $controller = new DashboardController();
@@ -165,13 +206,24 @@ class Routing
                 $controller->uploadAvatar();
                 break;
 
-            case 'login':
-            case 'register':
-                $controller = Routing::$routes[$path]["controller"];
-                $action = Routing::$routes[$path]["action"];
+            case 'user/password':
+                $controller = new UserController();
+                $controller->changePassword();
+                break;
 
-                $object = new $controller;
-                $object->$action();
+            case 'login':
+                $controller = new SecurityController();
+                $controller->login();
+                break;
+
+            case 'register':
+                $controller = new SecurityController();
+                $controller->register();
+                break;
+
+            case 'logout':
+                $controller = new SecurityController();
+                $controller->logout();
                 break;
 
 

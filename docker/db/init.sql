@@ -36,8 +36,9 @@ CREATE TABLE users (
     name VARCHAR(100) NOT NULL,
     surname VARCHAR(100) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
     avatar_url TEXT DEFAULT NULL
 );
 
-INSERT INTO users (name, surname, email, avatar_url) VALUES 
-('Admin', 'User', 'admin@example.com', 'https://lh3.googleusercontent.com/aida-public/AB6AXuBlhEWZ184-VSOg-zDjeb9KI3eiMMc0_bFY3TZbkTUodvFPWhRKzQykX-PfVQjUYL2N6--bSFQJhLl8T1iC5k8cMBMs7P_wOw-JraVmxhBCKvjOJpqCblLOdotlAfiOKOOTGPKqZHrLS8sAgAyPmy-3rcCSwHqgJhB3YVWrgPxeUyFqfmJwYK5ZTiHGqX6kjYd3ZJkte98_4is-PaifRmOa1n0l9XfFXH67MeOXk8zF3Y4MTVWa_p7x5kcb_hEdMuazrH-iN_XY8IN2');
+INSERT INTO users (name, surname, email, password, avatar_url) VALUES 
+('Admin', 'User', 'admin@example.com', '$2y$10$7j.Qj.Qj.Qj.Qj.Qj.Qj.Qe.Qj.Qj.Qj.Qj.Qj.Qj.Qj.Qj.Qj.Qj', 'https://lh3.googleusercontent.com/aida-public/AB6AXuBlhEWZ184-VSOg-zDjeb9KI3eiMMc0_bFY3TZbkTUodvFPWhRKzQykX-PfVQjUYL2N6--bSFQJhLl8T1iC5k8cMBMs7P_wOw-JraVmxhBCKvjOJpqCblLOdotlAfiOKOOTGPKqZHrLS8sAgAyPmy-3rcCSwHqgJhB3YVWrgPxeUyFqfmJwYK5ZTiHGqX6kjYd3ZJkte98_4is-PaifRmOa1n0l9XfFXH67MeOXk8zF3Y4MTVWa_p7x5kcb_hEdMuazrH-iN_XY8IN2');
