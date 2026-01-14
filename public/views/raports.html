@@ -81,29 +81,35 @@
                             </thead>
                             <tbody>
                                 <?php if(isset($vehicles)): ?>
-                                <?php foreach ($vehicles as $vehicle): ?>
+                                <?php foreach ($vehicles as $vehicle): 
+                                    $v_name = $vehicle['name'];
+                                    $v_type = $vehicle['type'];
+                                    $v_mileage = $vehicle['mileage'];
+                                    $v_service = $vehicle['next_service_date'];
+                                    $v_cost = $vehicle['estimated_service_cost'];
+                                    $v_status = $vehicle['status'];
+                                ?>
                                 <tr>
                                     <td class="text-dark font-medium">
-                                        <?= $vehicle['name']; ?>
+                                        <?= $v_name; ?>
                                     </td>
                                     <td>
-                                        <?= $vehicle['type']; ?>
+                                        <?= $v_type; ?>
                                     </td>
                                     <td>
-                                        <span
-                                            class="status-badge <?= strtolower(str_replace(' ', '-', $vehicle['status'])); ?>">
-                                            <?= $vehicle['status']; ?>
+                                        <span class="status-badge <?= strtolower(str_replace(' ', '-', $v_status)); ?>">
+                                            <?= $v_status; ?>
                                         </span>
                                     </td>
                                     <td>
                                         <button class="btn-primary"
                                             style="padding: 0.25rem 0.75rem; font-size: 0.75rem;" onclick="generateVehicleReport(
-                                                '<?= $vehicle['name'] ?>', 
-                                                '<?= $vehicle['type'] ?>', 
-                                                '<?= $vehicle['mileage'] ?>', 
-                                                '<?= $vehicle['next_service_date'] ?>', 
-                                                '<?= $vehicle['estimated_service_cost'] ?>',
-                                                '<?= $vehicle['status'] ?>'
+                                                '<?= $v_name ?>', 
+                                                '<?= $v_type ?>', 
+                                                '<?= $v_mileage ?>', 
+                                                '<?= $v_service ?>', 
+                                                '<?= $v_cost ?>',
+                                                '<?= $v_status ?>'
                                             )">
                                             PDF
                                         </button>
@@ -133,27 +139,31 @@
                             </thead>
                             <tbody>
                                 <?php if(isset($drivers)): ?>
-                                <?php foreach ($drivers as $driver): ?>
+                                <?php foreach ($drivers as $driver): 
+                                    $d_name = $driver['first_name'] . ' ' . $driver['last_name'];
+                                    $d_city = $driver['city'];
+                                    $d_status = $driver['status'];
+                                    $d_date = $driver['employment_date'];
+                                ?>
                                 <tr>
                                     <td class="text-dark font-medium">
-                                        <?= $driver['first_name'] . ' ' . $driver['last_name']; ?>
+                                        <?= $d_name; ?>
                                     </td>
                                     <td>
-                                        <?= $driver['city']; ?>
+                                        <?= $d_city; ?>
                                     </td>
                                     <td>
-                                        <span
-                                            class="status-badge <?= strtolower(str_replace(' ', '-', $driver['status'])); ?>">
-                                            <?= $driver['status']; ?>
+                                        <span class="status-badge <?= strtolower(str_replace(' ', '-', $d_status)); ?>">
+                                            <?= $d_status; ?>
                                         </span>
                                     </td>
                                     <td>
                                         <button class="btn-primary"
                                             style="padding: 0.25rem 0.75rem; font-size: 0.75rem;" onclick="generateDriverReport(
-                                                '<?= $driver['first_name'] . ' ' . $driver['last_name'] ?>', 
-                                                '<?= $driver['city'] ?>', 
-                                                '<?= $driver['status'] ?>',
-                                                '<?= $driver['employment_date'] ?>'
+                                                '<?= $d_name ?>', 
+                                                '<?= $d_city ?>', 
+                                                '<?= $d_status ?>',
+                                                '<?= $d_date ?>'
                                             )">
                                             PDF
                                         </button>

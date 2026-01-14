@@ -145,7 +145,7 @@
         // Data from PHP
         const typeLabels = <?= json_encode(array_keys($typeCosts)) ?>;
         const typeData = <?= json_encode(array_values($typeCosts)) ?>;
-        const totalBaseCost = <?= $totalCost ?>;
+        const totalBaseCost = <?= json_encode($totalCost ?? 0) ?>;
 
         // Type Chart (Pie/Doughnut)
         const ctxType = document.getElementById('typeChart').getContext('2d');
