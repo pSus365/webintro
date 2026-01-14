@@ -117,14 +117,14 @@
                                     <td>
                                         <?= $vehicle['estimated_service_cost']; ?> PLN
                                     </td>
-                                    <td>
-                                    <td style="display: flex; gap: 0.5rem;">
-                                        <a class="action-link" href="/edit-vehicle?id=<?= $vehicle['id']; ?>">Edytuj</a>
+                                    <td style="display: flex; gap: 0.5rem; white-space: nowrap;">
+                                        <a class="action-btn edit"
+                                            href="/edit-vehicle?id=<?= $vehicle['id']; ?>">Edytuj</a>
                                         <form action="/delete-vehicle" method="POST"
-                                            onsubmit="return confirm('Czy na pewno chcesz usunąć ten pojazd?');">
+                                            onsubmit="return confirm('Czy na pewno chcesz usunąć ten pojazd?');"
+                                            style="display: inline;">
                                             <input type="hidden" name="id" value="<?= $vehicle['id']; ?>">
-                                            <button type="submit" class="action-link"
-                                                style="background: none; border: none; cursor: pointer; color: var(--red-text);">Usuń</button>
+                                            <button type="submit" class="action-btn delete">Usuń</button>
                                         </form>
                                     </td>
                                 </tr>
