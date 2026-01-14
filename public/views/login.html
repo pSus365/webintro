@@ -38,6 +38,7 @@
                     <label>Hasło</label>
                     <input name="password" type="password" placeholder="password">
                 </div>
+                <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
                 <button type="submit" class="btn-primary">Zaloguj się</button>
             </form>
             <div class="text-link">

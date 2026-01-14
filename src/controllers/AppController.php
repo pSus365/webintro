@@ -5,7 +5,7 @@
 class AppController
 {
 
-    protected function render(string $template = null, array $variables = [])
+    protected function render(?string $template = null, array $variables = [])
     {
         $templatePath = 'public/views/' . $template . '.html';
         $templatePath404 = 'public/views/404.html';
@@ -13,7 +13,9 @@ class AppController
 
 
         if (file_exists($templatePath)) {
-            // ["message" => "Bledne haslo lub email"]
+            // Auto-escape variables for XSS protection
+            $variables = $this->secureData($variables);
+
             extract($variables);
             // $message = "Bledne haslo lub email";
             //echo $message; -> klucze staną sie zmiennymi bo tak dziala klasa extract
@@ -37,5 +39,17 @@ class AppController
     protected function isPost(): bool
     {
         return $_SERVER['REQUEST_METHOD'] === 'POST';
+    }
+
+    private function secureData($data)
+    {
+        if (is_array($data)) {
+            foreach ($data as $key => $value) {
+                $data[$key] = $this->secureData($value);
+            }
+        } elseif (is_string($data)) {
+            return htmlspecialchars($data, ENT_QUOTES, 'UTF-8');
+        }
+        return $data;
     }
 }

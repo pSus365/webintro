@@ -9,7 +9,7 @@ class UserController extends AppController
 
     public function __construct()
     {
-        $this->userRepository = new UserRepository();
+        $this->userRepository = UserRepository::getInstance();
     }
 
     public function profile()
@@ -24,6 +24,7 @@ class UserController extends AppController
         }
 
         $user = $this->userRepository->getUser($_SESSION['user_id']);
+        unset($user['password']);
         $this->render('user', ['user' => $user]);
     }
 

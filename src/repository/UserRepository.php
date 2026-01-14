@@ -6,9 +6,20 @@ class UserRepository
 {
     private $db;
 
-    public function __construct()
+    private static $instance = null;
+
+    private function __construct()
     {
         $this->db = new Database();
+    }
+
+    public static function getInstance()
+    {
+        if (self::$instance == null) {
+            self::$instance = new UserRepository();
+        }
+
+        return self::$instance;
     }
 
     public function getUser(int $id)

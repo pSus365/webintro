@@ -50,6 +50,7 @@
                     <label>Potwierdź hasło</label>
                     <input name="confirmedPassword" type="password" placeholder="password">
                 </div>
+                <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
                 <button type="submit" class="btn-primary">Zarejestruj się</button>
             </form>
             <div class="text-link">

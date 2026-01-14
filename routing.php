@@ -98,6 +98,13 @@ class Routing
     {
         // Start session if not started
         if (session_status() == PHP_SESSION_NONE) {
+            // Secure session configuration
+            ini_set('session.cookie_httponly', 1);
+            if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
+                ini_set('session.cookie_secure', 1);
+            }
+            ini_set('session.cookie_samesite', 'Strict');
+
             session_start();
         }
 
@@ -123,6 +130,18 @@ class Routing
             header("Location: /dashboard");
             exit();
         }
+
+        // Enforce HTTPS for sensitive routes
+        /* 
+        // Commented out to prevent breaking localhost dev environment without SSL.
+        // Uncomment for Production environment.
+        if (($path === 'login' || $path === 'register') && 
+            (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] === 'off')) {
+            $url = "https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+            header("Location: $url");
+            exit();
+        } 
+        */
 
 
         switch ($path) {
