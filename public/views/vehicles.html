@@ -65,9 +65,12 @@
                     </div>
 
                     <div class="tabs-wrapper">
-                        <a class="tab-link active" href="#">Wszystkie</a>
-                        <a class="tab-link" href="#">Aktywne</a>
-                        <a class="tab-link" href="#">Nieaktywne</a>
+                        <a class="tab-link <?= (!isset($currentFilter) || $currentFilter === 'all') ? 'active' : '' ?>"
+                            href="/vehicles?filter=all">Wszystkie</a>
+                        <a class="tab-link <?= (isset($currentFilter) && $currentFilter === 'active') ? 'active' : '' ?>"
+                            href="/vehicles?filter=active">Aktywne</a>
+                        <a class="tab-link <?= (isset($currentFilter) && $currentFilter === 'inactive') ? 'active' : '' ?>"
+                            href="/vehicles?filter=inactive">Nieaktywne</a>
                     </div>
                 </div>
 
