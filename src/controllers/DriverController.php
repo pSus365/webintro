@@ -16,8 +16,8 @@ class DriverController extends AppController
     public function index()
     {
         if (!$this->isAdmin()) {
-            $url = "http://$_SERVER[HTTP_HOST]";
-            header("Location: {$url}/dashboard");
+            http_response_code(403);
+            include __DIR__ . '/../../public/views/403.html';
             return;
         }
 
@@ -51,8 +51,8 @@ class DriverController extends AppController
     public function addDriver()
     {
         if (!$this->isAdmin()) {
-            $url = "http://$_SERVER[HTTP_HOST]";
-            header("Location: {$url}/dashboard");
+            http_response_code(403);
+            include __DIR__ . '/../../public/views/403.html';
             return;
         }
 
@@ -78,8 +78,8 @@ class DriverController extends AppController
     public function editDriver()
     {
         if (!$this->isAdmin()) {
-            $url = "http://$_SERVER[HTTP_HOST]";
-            header("Location: {$url}/dashboard");
+            http_response_code(403);
+            include __DIR__ . '/../../public/views/403.html';
             return;
         }
 
@@ -108,8 +108,8 @@ class DriverController extends AppController
     public function deleteDriver()
     {
         if (!$this->isAdmin()) {
-            $url = "http://$_SERVER[HTTP_HOST]";
-            header("Location: {$url}/dashboard");
+            http_response_code(403);
+            include __DIR__ . '/../../public/views/403.html';
             return;
         }
 

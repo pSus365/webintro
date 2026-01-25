@@ -11,4 +11,10 @@ $path = trim($path, '/');
 // echo "Debug Path: [" . $path . "] <br>";
 // echo "Request URI: [" . $_SERVER['REQUEST_URI'] . "] <br>";
 
-Routing::run($path);
+try {
+    Routing::run($path);
+} catch (Throwable $e) {
+    error_log($e->getMessage());
+    http_response_code(500);
+    include 'public/views/500.html';
+}

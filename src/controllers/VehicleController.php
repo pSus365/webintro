@@ -45,9 +45,8 @@ class VehicleController extends AppController
     public function addVehicle()
     {
         if (!$this->isAdmin()) {
-            // Redirect or show 403
-            $url = "http://$_SERVER[HTTP_HOST]";
-            header("Location: {$url}/vehicles");
+            http_response_code(403);
+            include __DIR__ . '/../../public/views/403.html';
             return;
         }
 

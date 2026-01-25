@@ -122,9 +122,14 @@ class Routing
             }
         }
 
+        // Check if route exists in our defined table
+        $routeExists = array_key_exists($path, self::$routes);
+
         // Protected routes check
         $publicRoutes = ['login', 'register'];
-        if (!in_array($path, $publicRoutes) && !isset($_SESSION['user_id'])) {
+
+        // Only enforce protection if the route is defined and not public
+        if ($routeExists && !in_array($path, $publicRoutes) && !isset($_SESSION['user_id'])) {
             header("Location: /login");
             exit();
         }
@@ -258,7 +263,7 @@ class Routing
                 break;
 
             default:
-                echo "<h1>H1 404</h1>";
+                http_response_code(404);
                 include 'public/views/404.html';
                 break;
         }

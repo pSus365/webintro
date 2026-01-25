@@ -1,0 +1,1 @@
+{"version":1,"defects":{"EndpointTest::testLoginPageIsAccessible":3,"EndpointTest::testRegisterPageIsAccessible":3,"EndpointTest::testNonExistentPageReturns404":3},"times":{"EndpointTest::testLoginPageIsAccessible":0.24,"EndpointTest::testRegisterPageIsAccessible":0.02,"EndpointTest::testNonExistentPageReturns404":0.006,"UserRepositoryTest::testGetInstance":0.031}}
