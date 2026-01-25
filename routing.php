@@ -60,6 +60,10 @@ class Routing
             "controller" => "MaintenanceController",
             "action" => "stats"
         ],
+        "add-maintenance" => [
+            "controller" => "MaintenanceController",
+            "action" => "addMaintenance"
+        ],
         "raports" => [
             "controller" => "ReportsController",
             "action" => "index"
@@ -198,6 +202,11 @@ class Routing
             case 'maintenance/stats':
                 $controller = new MaintenanceController();
                 $controller->stats();
+                break;
+
+            case 'add-maintenance':
+                $controller = new MaintenanceController();
+                $controller->addMaintenance();
                 break;
 
             case 'raports':

@@ -1,142 +1,98 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php
+$pageTitle = "Stitch Design - Pojazdy";
+include 'partials/header.php';
+?>
 
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link crossorigin="" href="https://fonts.gstatic.com/" rel="preconnect" />
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-    <title>Stitch Design - Pojazdy</title>
-    <link href="data:image/x-icon;base64," rel="icon" type="image/x-icon" />
-    <link rel="stylesheet" href="public/styles/vehicles.css">
-</head>
+<div class="page-header-row">
+    <h1 class="page-title">Pojazdy</h1>
+    <a href="/add-vehicle" class="btn-primary" style="text-decoration: none;">
+        <span class="material-symbols-outlined" style="font-size: 1.25rem;">add</span>
+        <span>Dodaj pojazd</span>
+    </a>
+</div>
 
-<body>
-    <div class="app-container">
-        <div class="main-wrapper">
-            <!-- Header (Reused) -->
-            <header class="top-header">
-                <div class="logo-section">
-                    <div class="logo-icon">
-                        <svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z"></path>
-                            <path d="M12 12L2 7"></path>
-                            <path d="M12 12L22 7"></path>
-                            <path d="M12 12V22"></path>
-                            <path d="M7 4.5L17 9.5"></path>
-                        </svg>
-                    </div>
-                    <h2 class="logo-text">Fleet Manager</h2>
-                </div>
-                <div class="header-actions">
-                    <nav class="main-nav">
-                        <a class="nav-link" href="/dashboard">Dashboard</a>
-                        <a class="nav-link active" href="/vehicles">Pojazdy</a>
-                        <a class="nav-link" href="/drivers">Kierowcy</a>
-                        <a class="nav-link" href="/maintenance">Utrzymanie</a>
-                        <a class="nav-link" href="/raports">Raporty</a>
-                    </nav>
-                    <div class="user-actions">
-                        <a href="/reminders" class="btn-icon" style="text-decoration: none; color: inherit;">
-                            <span class="material-symbols-outlined"> notifications </span>
-                        </a>
-                        <a href="/user" class="btn-icon" style="text-decoration: none; color: inherit;">
-                            <span class="material-symbols-outlined">account_circle</span>
-                        </a>
-                    </div>
-                </div>
-            </header>
-
-            <main class="content-area">
-                <div class="page-header-row">
-                    <h1 class="page-title">Pojazdy</h1>
-                    <a href="/add-vehicle" class="btn-primary" style="text-decoration: none;">
-                        <span class="material-symbols-outlined" style="font-size: 1.25rem;">add</span>
-                        <span>Dodaj pojazd</span>
-                    </a>
-                </div>
-
-                <div class="controls-section">
-                    <form class="search-wrapper" action="/vehicles" method="GET">
-                        <div class="search-icon">
-                            <span class="material-symbols-outlined">search</span>
-                        </div>
-                        <input class="search-input" name="search" placeholder="Szukaj pojazdu" type="text"
-                            value="<?= $search ?? '' ?>" />
-                        <?php if(isset($currentFilter) && $currentFilter !== 'all'): ?>
-                        <input type="hidden" name="filter" value="<?= $currentFilter ?>">
-                        <?php endif; ?>
-                    </form>
-
-                    <div class="tabs-wrapper">
-                        <a class="tab-link <?= (!isset($currentFilter) || $currentFilter === 'all') ? 'active' : '' ?>"
-                            href="/vehicles?filter=all">Wszystkie</a>
-                        <a class="tab-link <?= (isset($currentFilter) && $currentFilter === 'active') ? 'active' : '' ?>"
-                            href="/vehicles?filter=active">Aktywne</a>
-                        <a class="tab-link <?= (isset($currentFilter) && $currentFilter === 'inactive') ? 'active' : '' ?>"
-                            href="/vehicles?filter=inactive">Nieaktywne</a>
-                    </div>
-                </div>
-
-                <div class="table-container">
-                    <div class="table-wrapper">
-                        <table class="vehicles-table">
-                            <thead>
-                                <tr>
-                                    <th>Nazwa</th>
-                                    <th>Typ</th>
-                                    <th>Status</th>
-                                    <th>Przebieg</th>
-                                    <th>Następny Przegląd</th>
-                                    <th>Koszt Serwisu</th>
-                                    <th>Akcje</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php if(isset($vehicles)): ?>
-                                <?php foreach ($vehicles as $vehicle): ?>
-                                <tr>
-                                    <td class="text-dark font-medium">
-                                        <?= $vehicle['name']; ?>
-                                    </td>
-                                    <td>
-                                        <?= $vehicle['type']; ?>
-                                    </td>
-                                    <td>
-                                        <span
-                                            class="status-badge <?= strtolower(str_replace(' ', '-', $vehicle['status'])); ?>">
-                                            <?= $vehicle['status']; ?>
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <?= $vehicle['mileage']; ?> km
-                                    </td>
-                                    <td>
-                                        <?= $vehicle['next_service_date']; ?>
-                                    </td>
-                                    <td>
-                                        <?= $vehicle['estimated_service_cost']; ?> PLN
-                                    </td>
-                                    <td style="display: flex; gap: 0.5rem; white-space: nowrap;">
-                                        <a class="action-btn edit"
-                                            href="/edit-vehicle?id=<?= $vehicle['id']; ?>">Edytuj</a>
-                                        <form action="/delete-vehicle" method="POST"
-                                            onsubmit="return confirm('Czy na pewno chcesz usunąć ten pojazd?');"
-                                            style="display: inline;">
-                                            <input type="hidden" name="id" value="<?= $vehicle['id']; ?>">
-                                            <button type="submit" class="action-btn delete">Usuń</button>
-                                        </form>
-                                    </td>
-                                </tr>
-                                <?php endforeach; ?>
-                                <?php endif; ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </main>
+<div class="controls-section">
+    <form class="search-wrapper" action="/vehicles" method="GET">
+        <div class="search-icon">
+            <span class="material-symbols-outlined">search</span>
         </div>
-    </div>
-</body>
+        <input class="search-input" name="search" placeholder="Szukaj pojazdu" type="text"
+            value="<?= $search ?? '' ?>" />
+        <?php if(isset($currentFilter) && $currentFilter !== 'all'): ?>
+        <input type="hidden" name="filter" value="<?= $currentFilter ?>">
+        <?php endif; ?>
+    </form>
 
-</html>
+    <div class="tabs-wrapper">
+        <a class="tab-link <?= (!isset($currentFilter) || $currentFilter === 'all') ? 'active' : '' ?>"
+            href="/vehicles?filter=all">Wszystkie</a>
+        <a class="tab-link <?= (isset($currentFilter) && $currentFilter === 'active') ? 'active' : '' ?>"
+            href="/vehicles?filter=active">Aktywne</a>
+        <a class="tab-link <?= (isset($currentFilter) && $currentFilter === 'inactive') ? 'active' : '' ?>"
+            href="/vehicles?filter=inactive">Nieaktywne</a>
+    </div>
+</div>
+
+<div class="table-container">
+    <div class="table-wrapper">
+        <table class="vehicles-table">
+            <thead>
+                <tr>
+                    <th>Nazwa</th>
+                    <th>Typ</th>
+                    <th>Status</th>
+                    <th>Przebieg</th>
+                    <th>Następny Przegląd</th>
+                    <th>Koszt Serwisu</th>
+                    <th>Akcje</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if(isset($vehicles)): ?>
+                <?php foreach ($vehicles as $vehicle): ?>
+                <tr>
+                    <td class="text-dark font-medium">
+                        <?= htmlspecialchars($vehicle['name']) ?>
+                    </td>
+                    <td>
+                        <?= htmlspecialchars($vehicle['type']) ?>
+                    </td>
+                    <td>
+                        <span class="status-badge <?= strtolower(str_replace(' ', '-', $vehicle['status'])); ?>">
+                            <?= htmlspecialchars($vehicle['status']) ?>
+                        </span>
+                    </td>
+                    <td>
+                        <?= htmlspecialchars($vehicle['mileage']) ?> km
+                    </td>
+                    <td>
+                        <?= htmlspecialchars($vehicle['next_service_date']) ?>
+                    </td>
+                    <td>
+                        <?= htmlspecialchars($vehicle['estimated_service_cost']) ?> PLN
+                    </td>
+                    <td style="display: flex; gap: 0.5rem; white-space: nowrap;">
+                        <a class="action-btn edit" href="/edit-vehicle?id=<?= $vehicle['id']; ?>">Edytuj</a>
+                        <a href="/add-maintenance?vehicle_id=<?= $vehicle['id'] ?>" class="action-btn"
+                            style="color: var(--amber-text); background-color: var(--amber-bg);" title="Dodaj Serwis">
+                            <span class="material-symbols-outlined" style="font-size: 16px;">build</span>
+                        </a>
+                        <form action="/delete-vehicle" method="POST"
+                            onsubmit="return confirm('Czy na pewno chcesz usunąć ten pojazd?');"
+                            style="display: inline;">
+                            <input type="hidden" name="id" value="<?= $vehicle['id']; ?>">
+                            <button type="submit" class="action-btn delete">Usuń</button>
+                        </form>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Add Script for search or other interactions -->
+<script src="/public/js/search_vehicles.js"></script>
+
+<?php include 'partials/footer.php'; ?>

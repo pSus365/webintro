@@ -1,129 +1,84 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php
+$pageTitle = "Stitch Design - " . (($action === 'edit') ? 'Edytuj Kierowcę' : 'Dodaj Kierowcę');
+$extraStyles = ['/public/styles/drivers.css'];
+include 'partials/header.php';
+?>
 
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link crossorigin="" href="https://fonts.gstatic.com/" rel="preconnect" />
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-    <title>Stitch Design -
-        <?= ($action === 'edit') ? 'Edytuj Kierowcę' : 'Dodaj Kierowcę' ?>
-    </title>
-    <link href="data:image/x-icon;base64," rel="icon" type="image/x-icon" />
-    <link rel="stylesheet" href="public/styles/drivers.css">
-</head>
+<div class="page-header-row">
+    <h1 class="page-title">
+        <?= ($action === 'edit') ? 'Edycja Kierowcy' : 'Nowy Kierowca' ?>
+    </h1>
+    <a href="/drivers" class="btn-primary" style="background-color: var(--text-muted); text-decoration: none;">
+        Powrót
+    </a>
+</div>
 
-<body>
-    <div class="app-container">
-        <div class="main-wrapper">
-            <!-- Header (Reused) -->
-            <header class="top-header">
-                <div class="logo-section">
-                    <div class="logo-icon">
-                        <svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z"></path>
-                            <path d="M12 12L2 7"></path>
-                            <path d="M12 12L22 7"></path>
-                            <path d="M12 12V22"></path>
-                            <path d="M7 4.5L17 9.5"></path>
-                        </svg>
-                    </div>
-                    <h2 class="logo-text">Fleet Manager</h2>
-                </div>
-                <div class="header-actions">
-                    <nav class="main-nav">
-                        <a class="nav-link" href="/dashboard">Dashboard</a>
-                        <a class="nav-link" href="/vehicles">Pojazdy</a>
-                        <a class="nav-link active" href="/drivers">Kierowcy</a>
-                        <a class="nav-link" href="/maintenance">Utrzymanie</a>
-                        <a class="nav-link" href="/raports">Raporty</a>
-                    </nav>
-                </div>
-            </header>
+<div class="table-container" style="padding: 2rem;">
+    <form action="<?= ($action === 'edit') ? '/edit-driver' : '/add-driver' ?>" method="POST"
+        style="max-width: 600px; margin: 0 auto; display: flex; flex-direction: column; gap: 1rem;">
+        <?php if($action === 'edit'): ?>
+        <input type="hidden" name="id" value="<?= $driver['id'] ?>">
+        <?php endif; ?>
 
-            <main class="content-area">
-                <div class="page-header-row">
-                    <h1 class="page-title">
-                        <?= ($action === 'edit') ? 'Edycja Kierowcy' : 'Nowy Kierowca' ?>
-                    </h1>
-                    <a href="/drivers" class="btn-primary"
-                        style="background-color: var(--text-muted); text-decoration: none;">
-                        Powrót
-                    </a>
-                </div>
-
-                <div class="table-container" style="padding: 2rem;">
-                    <form action="<?= ($action === 'edit') ? '/edit-driver' : '/add-driver' ?>" method="POST"
-                        style="max-width: 600px; margin: 0 auto; display: flex; flex-direction: column; gap: 1rem;">
-                        <?php if($action === 'edit'): ?>
-                        <input type="hidden" name="id" value="<?= $driver['id'] ?>">
-                        <?php endif; ?>
-
-                        <div style="display: flex; gap: 1rem;">
-                            <div style="display: flex; flex-direction: column; gap: 0.5rem; flex: 1;">
-                                <label style="font-weight: 500; font-size: 0.875rem;">Imię</label>
-                                <input type="text" name="first_name" required value="<?= $driver['first_name'] ?? '' ?>"
-                                    class="search-input" style="padding-left: 1rem;">
-                            </div>
-                            <div style="display: flex; flex-direction: column; gap: 0.5rem; flex: 1;">
-                                <label style="font-weight: 500; font-size: 0.875rem;">Nazwisko</label>
-                                <input type="text" name="last_name" required value="<?= $driver['last_name'] ?? '' ?>"
-                                    class="search-input" style="padding-left: 1rem;">
-                            </div>
-                        </div>
-
-                        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-                            <label style="font-weight: 500; font-size: 0.875rem;">Data urodzenia</label>
-                            <input type="date" name="birth_date" required value="<?= $driver['birth_date'] ?? '' ?>"
-                                class="search-input" style="padding-left: 1rem;">
-                        </div>
-
-                        <div style="display: flex; gap: 1rem;">
-                            <div style="display: flex; flex-direction: column; gap: 0.5rem; flex: 1;">
-                                <label style="font-weight: 500; font-size: 0.875rem;">Miasto</label>
-                                <input type="text" name="city" required value="<?= $driver['city'] ?? '' ?>"
-                                    class="search-input" style="padding-left: 1rem;">
-                            </div>
-                            <div style="display: flex; flex-direction: column; gap: 0.5rem; flex: 1;">
-                                <label style="font-weight: 500; font-size: 0.875rem;">Ulica</label>
-                                <input type="text" name="street" required value="<?= $driver['street'] ?? '' ?>"
-                                    class="search-input" style="padding-left: 1rem;">
-                            </div>
-                            <div style="display: flex; flex-direction: column; gap: 0.5rem; width: 80px;">
-                                <label style="font-weight: 500; font-size: 0.875rem;">Nr domu</label>
-                                <input type="text" name="house_number" required
-                                    value="<?= $driver['house_number'] ?? '' ?>" class="search-input"
-                                    style="padding-left: 1rem;">
-                            </div>
-                        </div>
-
-                        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-                            <label style="font-weight: 500; font-size: 0.875rem;">Data Zatrudnienia</label>
-                            <input type="date" name="employment_date" required
-                                value="<?= $driver['employment_date'] ?? '' ?>" class="search-input"
-                                style="padding-left: 1rem;">
-                        </div>
-
-                        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-                            <label style="font-weight: 500; font-size: 0.875rem;">Status</label>
-                            <select name="status" class="search-input" style="padding-left: 1rem;">
-                                <option value="wolny" <?=(isset($driver['status']) && $driver['status']==='wolny' )
-                                    ? 'selected' : '' ?>>Wolny</option>
-                                <option value="w trasie" <?=(isset($driver['status']) && $driver['status']==='w trasie'
-                                    ) ? 'selected' : '' ?>>W trasie</option>
-                                <option value="L4" <?=(isset($driver['status']) && $driver['status']==='L4' )
-                                    ? 'selected' : '' ?>>L4</option>
-                            </select>
-                        </div>
-
-                        <button type="submit" class="btn-primary" style="margin-top: 1rem; w-full: 100%;">
-                            <?= ($action === 'edit') ? 'Zapisz zmiany' : 'Dodaj kierowcę' ?>
-                        </button>
-                    </form>
-                </div>
-            </main>
+        <div style="display: flex; gap: 1rem;">
+            <div style="display: flex; flex-direction: column; gap: 0.5rem; flex: 1;">
+                <label style="font-weight: 500; font-size: 0.875rem;">Imię</label>
+                <input type="text" name="first_name" required value="<?= $driver['first_name'] ?? '' ?>"
+                    class="search-input" style="padding-left: 1rem;">
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 0.5rem; flex: 1;">
+                <label style="font-weight: 500; font-size: 0.875rem;">Nazwisko</label>
+                <input type="text" name="last_name" required value="<?= $driver['last_name'] ?? '' ?>"
+                    class="search-input" style="padding-left: 1rem;">
+            </div>
         </div>
-    </div>
-</body>
 
-</html>
+        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <label style="font-weight: 500; font-size: 0.875rem;">Data urodzenia</label>
+            <input type="date" name="birth_date" required value="<?= $driver['birth_date'] ?? '' ?>"
+                class="search-input" style="padding-left: 1rem;">
+        </div>
+
+        <div style="display: flex; gap: 1rem;">
+            <div style="display: flex; flex-direction: column; gap: 0.5rem; flex: 1;">
+                <label style="font-weight: 500; font-size: 0.875rem;">Miasto</label>
+                <input type="text" name="city" required value="<?= $driver['city'] ?? '' ?>" class="search-input"
+                    style="padding-left: 1rem;">
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 0.5rem; flex: 1;">
+                <label style="font-weight: 500; font-size: 0.875rem;">Ulica</label>
+                <input type="text" name="street" required value="<?= $driver['street'] ?? '' ?>" class="search-input"
+                    style="padding-left: 1rem;">
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 0.5rem; width: 80px;">
+                <label style="font-weight: 500; font-size: 0.875rem;">Nr domu</label>
+                <input type="text" name="house_number" required value="<?= $driver['house_number'] ?? '' ?>"
+                    class="search-input" style="padding-left: 1rem;">
+            </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <label style="font-weight: 500; font-size: 0.875rem;">Data Zatrudnienia</label>
+            <input type="date" name="employment_date" required value="<?= $driver['employment_date'] ?? '' ?>"
+                class="search-input" style="padding-left: 1rem;">
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <label style="font-weight: 500; font-size: 0.875rem;">Status</label>
+            <select name="status" class="search-input" style="padding-left: 1rem;">
+                <option value="wolny" <?=(isset($driver['status']) && $driver['status']==='wolny' ) ? 'selected' : '' ?>
+                    >Wolny</option>
+                <option value="w trasie" <?=(isset($driver['status']) && $driver['status']==='w trasie' ) ? 'selected'
+                    : '' ?>>W trasie</option>
+                <option value="L4" <?=(isset($driver['status']) && $driver['status']==='L4' ) ? 'selected' : '' ?>>L4
+                </option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn-primary" style="margin-top: 1rem; w-full: 100%;">
+            <?= ($action === 'edit') ? 'Zapisz zmiany' : 'Dodaj kierowcę' ?>
+        </button>
+    </form>
+</div>
+
+<?php include 'partials/footer.php'; ?>

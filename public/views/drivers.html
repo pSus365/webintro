@@ -1,138 +1,88 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php
+$pageTitle = "Stitch Design - Kierowcy";
+$extraStyles = ['/public/styles/drivers.css'];
+include 'partials/header.php';
+?>
 
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link crossorigin="" href="https://fonts.gstatic.com/" rel="preconnect" />
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-    <title>Stitch Design - Kierowcy</title>
-    <link href="data:image/x-icon;base64," rel="icon" type="image/x-icon" />
-    <link rel="stylesheet" href="public/styles/drivers.css">
-</head>
+<div class="page-header-row">
+    <h1 class="page-title">Kierowcy</h1>
+    <a href="/add-driver" class="btn-primary" style="text-decoration: none;">
+        <span class="material-symbols-outlined" style="font-size: 1.25rem;">add</span>
+        <span>Dodaj kierowcę</span>
+    </a>
+</div>
 
-<body>
-    <div class="app-container">
-        <div class="main-wrapper">
-            <!-- Header (Reused) -->
-            <header class="top-header">
-                <div class="logo-section">
-                    <div class="logo-icon">
-                        <svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z"></path>
-                            <path d="M12 12L2 7"></path>
-                            <path d="M12 12L22 7"></path>
-                            <path d="M12 12V22"></path>
-                            <path d="M7 4.5L17 9.5"></path>
-                        </svg>
-                    </div>
-                    <h2 class="logo-text">Fleet Manager</h2>
-                </div>
-                <div class="header-actions">
-                    <nav class="main-nav">
-                        <a class="nav-link" href="/dashboard">Dashboard</a>
-                        <a class="nav-link" href="/vehicles">Pojazdy</a>
-                        <a class="nav-link active" href="/drivers">Kierowcy</a>
-                        <a class="nav-link" href="/maintenance">Utrzymanie</a>
-                        <a class="nav-link" href="/raports">Raporty</a>
-                    </nav>
-                    <div class="user-actions">
-                        <a href="/reminders" class="btn-icon" style="text-decoration: none; color: inherit;">
-                            <span class="material-symbols-outlined"> notifications </span>
-                        </a>
-                        <a href="/user" class="btn-icon" style="text-decoration: none; color: inherit;">
-                            <span class="material-symbols-outlined">account_circle</span>
-                        </a>
-                    </div>
-                </div>
-            </header>
-
-            <main class="content-area">
-                <div class="page-header-row">
-                    <h1 class="page-title">Kierowcy</h1>
-                    <a href="/add-driver" class="btn-primary" style="text-decoration: none;">
-                        <span class="material-symbols-outlined" style="font-size: 1.25rem;">add</span>
-                        <span>Dodaj kierowcę</span>
-                    </a>
-                </div>
-
-                <div class="controls-section">
-                    <form class="search-wrapper" action="/drivers" method="GET">
-                        <div class="search-icon">
-                            <span class="material-symbols-outlined">search</span>
-                        </div>
-                        <input class="search-input" name="search" placeholder="Szukaj kierowcy" type="text"
-                            value="<?= $search ?? '' ?>" />
-                        <?php if(isset($currentFilter) && $currentFilter !== 'all'): ?>
-                        <input type="hidden" name="filter" value="<?= $currentFilter ?>">
-                        <?php endif; ?>
-                    </form>
-
-                    <div class="tabs-wrapper">
-                        <a class="tab-link <?= (!isset($currentFilter) || $currentFilter === 'all') ? 'active' : '' ?>"
-                            href="/drivers?filter=all">Wszystkie</a>
-                        <a class="tab-link <?= (isset($currentFilter) && $currentFilter === 'active') ? 'active' : '' ?>"
-                            href="/drivers?filter=active">Aktywni</a>
-                        <a class="tab-link <?= (isset($currentFilter) && $currentFilter === 'inactive') ? 'active' : '' ?>"
-                            href="/drivers?filter=inactive">Nieaktywni</a>
-                    </div>
-                </div>
-
-                <div class="table-container">
-                    <div class="table-wrapper">
-                        <table class="vehicles-table">
-                            <thead>
-                                <tr>
-                                    <th>Imię</th>
-                                    <th>Nazwisko</th>
-                                    <th>Status</th>
-                                    <th>Adres</th>
-                                    <th>Data Zatrudnienia</th>
-                                    <th>Akcje</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php if(isset($drivers)): ?>
-                                <?php foreach ($drivers as $driver): ?>
-                                <tr>
-                                    <td class="text-dark font-medium">
-                                        <?= $driver['first_name']; ?>
-                                    </td>
-                                    <td>
-                                        <?= $driver['last_name']; ?>
-                                    </td>
-                                    <td>
-                                        <span
-                                            class="status-badge <?= strtolower(str_replace(' ', '-', $driver['status'])); ?>">
-                                            <?= $driver['status']; ?>
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <?= $driver['city'] . ', ' . $driver['street'] . ' ' . $driver['house_number']; ?>
-                                    </td>
-                                    <td>
-                                        <?= $driver['employment_date']; ?>
-                                    </td>
-                                    <td style="display: flex; gap: 0.5rem; white-space: nowrap;">
-                                        <a class="action-btn edit"
-                                            href="/edit-driver?id=<?= $driver['id']; ?>">Edytuj</a>
-                                        <form action="/delete-driver" method="POST"
-                                            onsubmit="return confirm('Czy na pewno chcesz usunąć tego kierowcę?');"
-                                            style="display: inline;">
-                                            <input type="hidden" name="id" value="<?= $driver['id']; ?>">
-                                            <button type="submit" class="action-btn delete">Usuń</button>
-                                        </form>
-                                    </td>
-                                </tr>
-                                <?php endforeach; ?>
-                                <?php endif; ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </main>
+<div class="controls-section">
+    <form class="search-wrapper" action="/drivers" method="GET">
+        <div class="search-icon">
+            <span class="material-symbols-outlined">search</span>
         </div>
-    </div>
-</body>
+        <input class="search-input" name="search" placeholder="Szukaj kierowcy" type="text"
+            value="<?= $search ?? '' ?>" />
+        <?php if(isset($currentFilter) && $currentFilter !== 'all'): ?>
+        <input type="hidden" name="filter" value="<?= $currentFilter ?>">
+        <?php endif; ?>
+    </form>
 
-</html>
+    <div class="tabs-wrapper">
+        <a class="tab-link <?= (!isset($currentFilter) || $currentFilter === 'all') ? 'active' : '' ?>"
+            href="/drivers?filter=all">Wszystkie</a>
+        <a class="tab-link <?= (isset($currentFilter) && $currentFilter === 'active') ? 'active' : '' ?>"
+            href="/drivers?filter=active">Aktywni</a>
+        <a class="tab-link <?= (isset($currentFilter) && $currentFilter === 'inactive') ? 'active' : '' ?>"
+            href="/drivers?filter=inactive">Nieaktywni</a>
+    </div>
+</div>
+
+<div class="table-container">
+    <div class="table-wrapper">
+        <table class="vehicles-table">
+            <thead>
+                <tr>
+                    <th>Imię</th>
+                    <th>Nazwisko</th>
+                    <th>Status</th>
+                    <th>Adres</th>
+                    <th>Data Zatrudnienia</th>
+                    <th>Akcje</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if(isset($drivers)): ?>
+                <?php foreach ($drivers as $driver): ?>
+                <tr>
+                    <td class="text-dark font-medium">
+                        <?= $driver['first_name']; ?>
+                    </td>
+                    <td>
+                        <?= $driver['last_name']; ?>
+                    </td>
+                    <td>
+                        <span class="status-badge <?= strtolower(str_replace(' ', '-', $driver['status'])); ?>">
+                            <?= $driver['status']; ?>
+                        </span>
+                    </td>
+                    <td>
+                        <?= $driver['city'] . ', ' . $driver['street'] . ' ' . $driver['house_number']; ?>
+                    </td>
+                    <td>
+                        <?= $driver['employment_date']; ?>
+                    </td>
+                    <td style="display: flex; gap: 0.5rem; white-space: nowrap;">
+                        <a class="action-btn edit" href="/edit-driver?id=<?= $driver['id']; ?>">Edytuj</a>
+                        <form action="/delete-driver" method="POST"
+                            onsubmit="return confirm('Czy na pewno chcesz usunąć tego kierowcę?');"
+                            style="display: inline;">
+                            <input type="hidden" name="id" value="<?= $driver['id']; ?>">
+                            <button type="submit" class="action-btn delete">Usuń</button>
+                        </form>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<?php include 'partials/footer.php'; ?>

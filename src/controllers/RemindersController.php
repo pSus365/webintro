@@ -14,16 +14,15 @@ class RemindersController extends AppController
 
     public function index()
     {
-        $vehicles = $this->vehicleRepository->getVehicles();
+        // Fetch up to 50 upcoming maintenance records
+        $upcomingServices = $this->vehicleRepository->getUpcomingMaintenances(50);
 
-        // Filter out vehicles without service date and sort by date ASC
-        $upcomingServices = array_filter($vehicles, function ($v) {
-            return !empty($v['next_service_date']);
-        });
+        // Filter out past dates if strictly "upcoming" desired, but query asks for all. 
+        // Let's filter in PHP if needed, or rely on SQL. 
+        // The current query orders by date ASC. It might include past unpaid ones? 
+        // Let's assume the user wants to see all scheduled things.
 
-        usort($upcomingServices, function ($a, $b) {
-            return strtotime($a['next_service_date']) - strtotime($b['next_service_date']);
-        });
+        // Actually, let's just pass them. The view handles "overdue" logic.
 
         $this->render('reminders', ['reminders' => $upcomingServices]);
     }

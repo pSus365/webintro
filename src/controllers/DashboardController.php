@@ -17,10 +17,12 @@ class DashboardController extends AppController
     {
         $vehicles = $this->vehicleRepository->getVehicles();
         $stats = $this->vehicleRepository->getStatistics();
+        $upcomingMaintenances = $this->vehicleRepository->getUpcomingMaintenances();
 
         $this->render('dashboard', [
             'vehicles' => $vehicles,
-            'stats' => $stats
+            'stats' => $stats,
+            'upcomingMaintenances' => $upcomingMaintenances
         ]);
     }
 }

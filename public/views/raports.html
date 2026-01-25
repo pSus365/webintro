@@ -1,393 +1,339 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php
+$pageTitle = "Stitch Design - Raporty";
+$extraStyles = ['/public/styles/raports.css'];
+include 'partials/header.php';
+?>
 
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link crossorigin="" href="https://fonts.gstatic.com/" rel="preconnect" />
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-    <title>Stitch Design - Raporty</title>
-    <link href="data:image/x-icon;base64," rel="icon" type="image/x-icon" />
-    <link rel="stylesheet" href="public/styles/raports.css">
-    <!-- Load jsPDF and AutoTable from CDN -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
-    <!-- Load Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- Load jsPDF and Chart.js locally or via CDN (keep existing logic) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-</head>
+<div class="page-header-row">
+    <h1 class="page-title">Raporty i Analizy</h1>
+</div>
 
-<body>
-    <div class="app-container">
-        <div class="main-wrapper">
-            <!-- Header (Reused) -->
-            <header class="top-header">
-                <div class="logo-section">
-                    <div class="logo-icon">
-                        <svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z"></path>
-                            <path d="M12 12L2 7"></path>
-                            <path d="M12 12L22 7"></path>
-                            <path d="M12 12V22"></path>
-                            <path d="M7 4.5L17 9.5"></path>
-                        </svg>
-                    </div>
-                    <h2 class="logo-text">Fleet Manager</h2>
-                </div>
-                <div class="header-actions">
-                    <nav class="main-nav">
-                        <a class="nav-link" href="/dashboard">Dashboard</a>
-                        <a class="nav-link" href="/vehicles">Pojazdy</a>
-                        <a class="nav-link" href="/drivers">Kierowcy</a>
-                        <a class="nav-link" href="/maintenance">Utrzymanie</a>
-                        <a class="nav-link active" href="/raports">Raporty</a>
-                    </nav>
-                    <div class="user-actions">
-                        <a href="/reminders" class="btn-icon" style="text-decoration: none; color: inherit;">
-                            <span class="material-symbols-outlined"> notifications </span>
-                        </a>
-                        <a href="/user" class="btn-icon" style="text-decoration: none; color: inherit;">
-                            <span class="material-symbols-outlined">account_circle</span>
-                        </a>
-                    </div>
-                </div>
-            </header>
+<div class="controls-section" style="display: flex; gap: 1rem; margin-top: 1rem;">
+    <button class="filter-btn active" onclick="showTab('all')">Wszystkie</button>
+    <button class="filter-btn" onclick="showTab('vehicles')">Pojazdy</button>
+    <button class="filter-btn" onclick="showTab('drivers')">Kierowcy</button>
+</div>
 
-            <main class="content-area">
-                <div class="page-header-row">
-                    <h1 class="page-title">Raporty i Analizy</h1>
-                </div>
-
-                <div class="controls-section" style="display: flex; gap: 1rem; margin-top: 1rem;">
-                    <button class="filter-btn active" onclick="showTab('all')">Wszystkie</button>
-                    <button class="filter-btn" onclick="showTab('vehicles')">Pojazdy</button>
-                    <button class="filter-btn" onclick="showTab('drivers')">Kierowcy</button>
-                </div>
-
-                <!-- Vehicles Table -->
-                <div id="section-vehicles" class="table-container" style="margin-top: 2rem;">
-                    <h3
-                        style="padding: 1rem; border-bottom: 1px solid var(--border-color); font-size: 1.125rem; font-weight: 700;">
-                        Raporty Pojazdów</h3>
-                    <div class="table-wrapper">
-                        <table class="vehicles-table">
-                            <thead>
-                                <tr>
-                                    <th>Pojazd</th>
-                                    <th>Typ</th>
-                                    <th>Status</th>
-                                    <th>Generuj</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php if(isset($vehicles)): ?>
-                                <?php foreach ($vehicles as $vehicle): 
-                                    $v_name = $vehicle['name'];
-                                    $v_type = $vehicle['type'];
-                                    $v_mileage = $vehicle['mileage'];
-                                    $v_service = $vehicle['next_service_date'];
-                                    $v_cost = $vehicle['estimated_service_cost'];
-                                    $v_status = $vehicle['status'];
-                                ?>
-                                <tr>
-                                    <td class="text-dark font-medium">
-                                        <?= $v_name; ?>
-                                    </td>
-                                    <td>
-                                        <?= $v_type; ?>
-                                    </td>
-                                    <td>
-                                        <span class="status-badge <?= strtolower(str_replace(' ', '-', $v_status)); ?>">
-                                            <?= $v_status; ?>
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <button class="btn-primary"
-                                            style="padding: 0.25rem 0.75rem; font-size: 0.75rem;" onclick="generateVehicleReport(
-                                                '<?= $v_name ?>', 
-                                                '<?= $v_type ?>', 
-                                                '<?= $v_mileage ?>', 
-                                                '<?= $v_service ?>', 
-                                                '<?= $v_cost ?>',
-                                                '<?= $v_status ?>'
-                                            )">
-                                            PDF
-                                        </button>
-                                    </td>
-                                </tr>
-                                <?php endforeach; ?>
-                                <?php endif; ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- Drivers Table -->
-                <div id="section-drivers" class="table-container" style="margin-top: 2rem;">
-                    <h3
-                        style="padding: 1rem; border-bottom: 1px solid var(--border-color); font-size: 1.125rem; font-weight: 700;">
-                        Raporty Kierowców</h3>
-                    <div class="table-wrapper">
-                        <table class="vehicles-table">
-                            <thead>
-                                <tr>
-                                    <th>Imię i Nazwisko</th>
-                                    <th>Miasto</th>
-                                    <th>Status</th>
-                                    <th>Generuj</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php if(isset($drivers)): ?>
-                                <?php foreach ($drivers as $driver): 
-                                    $d_name = $driver['first_name'] . ' ' . $driver['last_name'];
-                                    $d_city = $driver['city'];
-                                    $d_status = $driver['status'];
-                                    $d_date = $driver['employment_date'];
-                                ?>
-                                <tr>
-                                    <td class="text-dark font-medium">
-                                        <?= $d_name; ?>
-                                    </td>
-                                    <td>
-                                        <?= $d_city; ?>
-                                    </td>
-                                    <td>
-                                        <span class="status-badge <?= strtolower(str_replace(' ', '-', $d_status)); ?>">
-                                            <?= $d_status; ?>
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <button class="btn-primary"
-                                            style="padding: 0.25rem 0.75rem; font-size: 0.75rem;" onclick="generateDriverReport(
-                                                '<?= $d_name ?>', 
-                                                '<?= $d_city ?>', 
-                                                '<?= $d_status ?>',
-                                                '<?= $d_date ?>'
-                                            )">
-                                            PDF
-                                        </button>
-                                    </td>
-                                </tr>
-                                <?php endforeach; ?>
-                                <?php endif; ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-            </main>
-        </div>
+<!-- Vehicles Table -->
+<div id="section-vehicles" class="table-container" style="margin-top: 2rem;">
+    <h3 style="padding: 1rem; border-bottom: 1px solid var(--border-color); font-size: 1.125rem; font-weight: 700;">
+        Raporty Pojazdów</h3>
+    <div class="table-wrapper">
+        <table class="vehicles-table">
+            <thead>
+                <tr>
+                    <th>Pojazd</th>
+                    <th>Typ</th>
+                    <th>Status</th>
+                    <th>Generuj</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if(isset($vehicles)): ?>
+                <?php foreach ($vehicles as $vehicle): 
+                    $v_name = $vehicle['name'];
+                    $v_type = $vehicle['type'];
+                    $v_mileage = $vehicle['mileage'];
+                    $v_service = $vehicle['next_service_date'];
+                    $v_cost = $vehicle['estimated_service_cost'];
+                    $v_status = $vehicle['status'];
+                ?>
+                <tr>
+                    <td class="text-dark font-medium">
+                        <?= $v_name; ?>
+                    </td>
+                    <td>
+                        <?= $v_type; ?>
+                    </td>
+                    <td>
+                        <span class="status-badge <?= strtolower(str_replace(' ', '-', $v_status)); ?>">
+                            <?= $v_status; ?>
+                        </span>
+                    </td>
+                    <td>
+                        <button class="btn-primary" style="padding: 0.25rem 0.75rem; font-size: 0.75rem;" onclick="generateVehicleReport(
+                                '<?= $v_name ?>', 
+                                '<?= $v_type ?>', 
+                                '<?= $v_mileage ?>', 
+                                '<?= $v_service ?>', 
+                                '<?= $v_cost ?>',
+                                '<?= $v_status ?>'
+                            )">
+                            PDF
+                        </button>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+                <?php endif; ?>
+            </tbody>
+        </table>
     </div>
+</div>
 
-    <!-- Hidden Canvas for Chart Generation -->
-    <div style="position: absolute; left: -9999px;">
-        <canvas id="pdfChartCanvas" width="800" height="400"></canvas>
+<!-- Drivers Table -->
+<div id="section-drivers" class="table-container" style="margin-top: 2rem;">
+    <h3 style="padding: 1rem; border-bottom: 1px solid var(--border-color); font-size: 1.125rem; font-weight: 700;">
+        Raporty Kierowców</h3>
+    <div class="table-wrapper">
+        <table class="vehicles-table">
+            <thead>
+                <tr>
+                    <th>Imię i Nazwisko</th>
+                    <th>Miasto</th>
+                    <th>Status</th>
+                    <th>Generuj</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if(isset($drivers)): ?>
+                <?php foreach ($drivers as $driver): 
+                    $d_name = $driver['first_name'] . ' ' . $driver['last_name'];
+                    $d_city = $driver['city'];
+                    $d_status = $driver['status'];
+                    $d_date = $driver['employment_date'];
+                ?>
+                <tr>
+                    <td class="text-dark font-medium">
+                        <?= $d_name; ?>
+                    </td>
+                    <td>
+                        <?= $d_city; ?>
+                    </td>
+                    <td>
+                        <span class="status-badge <?= strtolower(str_replace(' ', '-', $d_status)); ?>">
+                            <?= $d_status; ?>
+                        </span>
+                    </td>
+                    <td>
+                        <button class="btn-primary" style="padding: 0.25rem 0.75rem; font-size: 0.75rem;" onclick="generateDriverReport(
+                                '<?= $d_name ?>', 
+                                '<?= $d_city ?>', 
+                                '<?= $d_status ?>',
+                                '<?= $d_date ?>'
+                            )">
+                            PDF
+                        </button>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+                <?php endif; ?>
+            </tbody>
+        </table>
     </div>
+</div>
 
-    <script>
-        const { jsPDF } = window.jspdf;
+<!-- Hidden Canvas for Chart Generation -->
+<div style="position: absolute; left: -9999px;">
+    <canvas id="pdfChartCanvas" width="800" height="400"></canvas>
+</div>
 
-        function showTab(type) {
-            // Update buttons
-            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+<script>
+    const { jsPDF } = window.jspdf;
 
-            // Show/Hide sections
-            const vehSection = document.getElementById('section-vehicles');
-            const drvSection = document.getElementById('section-drivers');
+    function showTab(type) {
+        // Update buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
 
-            if (type === 'all') {
-                vehSection.style.display = 'block';
-                drvSection.style.display = 'block';
-            } else if (type === 'vehicles') {
-                vehSection.style.display = 'block';
-                drvSection.style.display = 'none';
-            } else if (type === 'drivers') {
-                vehSection.style.display = 'none';
-                drvSection.style.display = 'block';
-            }
+        // Show/Hide sections
+        const vehSection = document.getElementById('section-vehicles');
+        const drvSection = document.getElementById('section-drivers');
+
+        if (type === 'all') {
+            vehSection.style.display = 'block';
+            drvSection.style.display = 'block';
+        } else if (type === 'vehicles') {
+            vehSection.style.display = 'block';
+            drvSection.style.display = 'none';
+        } else if (type === 'drivers') {
+            vehSection.style.display = 'none';
+            drvSection.style.display = 'block';
+        }
+    }
+
+    async function generateChartImage(labels, data, label, color) {
+        const canvas = document.getElementById('pdfChartCanvas');
+        const ctx = canvas.getContext('2d');
+
+        if (window.pdfChartInstance) {
+            window.pdfChartInstance.destroy();
         }
 
-        async function generateChartImage(labels, data, label, color) {
-            const canvas = document.getElementById('pdfChartCanvas');
-            const ctx = canvas.getContext('2d');
-
-            if (window.pdfChartInstance) {
-                window.pdfChartInstance.destroy();
-            }
-
-            return new Promise((resolve) => {
-                window.pdfChartInstance = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: labels,
-                        datasets: [{
-                            label: label,
-                            data: data,
-                            backgroundColor: color,
-                            borderColor: color,
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        animation: {
-                            onComplete: () => {
-                                resolve(canvas.toDataURL('image/png'));
-                            }
-                        },
-                        responsive: false,
-                        scales: {
-                            y: { beginAtZero: true }
+        return new Promise((resolve) => {
+            window.pdfChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: label,
+                        data: data,
+                        backgroundColor: color,
+                        borderColor: color,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    animation: {
+                        onComplete: () => {
+                            resolve(canvas.toDataURL('image/png'));
                         }
+                    },
+                    responsive: false,
+                    scales: {
+                        y: { beginAtZero: true }
                     }
-                });
+                }
             });
+        });
+    }
+
+    async function generateVehicleReport(name, type, mileage, nextService, cost, status) {
+        const doc = new jsPDF();
+        const trips = Math.floor(Math.random() * (200 - 20) + 20);
+        const serviceCount = Math.floor(Math.random() * (12 - 1) + 1);
+        const totalServiceCost = (parseFloat(cost) * serviceCount).toFixed(2);
+
+        const chartImg = await generateChartImage(
+            ['Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec'],
+            [cost * 0.8, cost * 0.5, cost * 1.2, cost, cost * 0.2, cost * 0.9],
+            'Miesięczne Koszty (PLN)',
+            'rgba(17, 115, 212, 0.6)'
+        );
+
+        doc.setFontSize(22);
+        doc.text(`Raport Pojazdu: ${name}`, 14, 20);
+
+        doc.setFontSize(10);
+        doc.setTextColor(100);
+        doc.text(`Data: ${new Date().toLocaleDateString()}`, 14, 26);
+        doc.text(`ID Raportu: #${Math.floor(Math.random() * 10000)}`, 14, 31);
+
+        doc.setDrawColor(200);
+        doc.line(14, 35, 196, 35);
+
+        doc.autoTable({
+            startY: 40,
+            head: [['Parametr', 'Wartość']],
+            body: [
+                ['Typ Pojazdu', type],
+                ['Aktualny Status', status],
+                ['Przebieg', `${mileage} km`],
+                ['Liczba Tras (Rok)', trips],
+                ['Liczba Serwisów (Rok)', serviceCount],
+                ['Planowany Przegląd', nextService],
+                ['Szacowany Koszt Przeglądu', `${cost} PLN`],
+                ['Całkowity Koszt Serwisu (est.)', `${totalServiceCost} PLN`],
+            ],
+            theme: 'striped',
+            headStyles: { fillColor: [41, 128, 185] },
+            styles: { fontSize: 10, cellPadding: 3 },
+            columnStyles: { 0: { fontStyle: 'bold', width: 80 } }
+        });
+
+        let finalY = doc.lastAutoTable.finalY + 10;
+        if (finalY + 80 > 280) {
+            doc.addPage();
+            finalY = 20;
         }
 
-        async function generateVehicleReport(name, type, mileage, nextService, cost, status) {
-            const doc = new jsPDF();
-            const trips = Math.floor(Math.random() * (200 - 20) + 20);
-            const serviceCount = Math.floor(Math.random() * (12 - 1) + 1);
-            const totalServiceCost = (parseFloat(cost) * serviceCount).toFixed(2);
+        doc.text('Analiza Kosztów (6m):', 14, finalY);
+        doc.addImage(chartImg, 'PNG', 14, finalY + 5, 180, 90);
 
-            const chartImg = await generateChartImage(
-                ['Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec'],
-                [cost * 0.8, cost * 0.5, cost * 1.2, cost, cost * 0.2, cost * 0.9],
-                'Miesięczne Koszty (PLN)',
-                'rgba(17, 115, 212, 0.6)'
-            );
-
-            doc.setFontSize(22);
-            doc.text(`Raport Pojazdu: ${name}`, 14, 20);
-
-            doc.setFontSize(10);
-            doc.setTextColor(100);
-            doc.text(`Data: ${new Date().toLocaleDateString()}`, 14, 26);
-            doc.text(`ID Raportu: #${Math.floor(Math.random() * 10000)}`, 14, 31);
-
-            doc.setDrawColor(200);
-            doc.line(14, 35, 196, 35);
-
-            doc.autoTable({
-                startY: 40,
-                head: [['Parametr', 'Wartość']],
-                body: [
-                    ['Typ Pojazdu', type],
-                    ['Aktualny Status', status],
-                    ['Przebieg', `${mileage} km`],
-                    ['Liczba Tras (Rok)', trips],
-                    ['Liczba Serwisów (Rok)', serviceCount],
-                    ['Planowany Przegląd', nextService],
-                    ['Szacowany Koszt Przeglądu', `${cost} PLN`],
-                    ['Całkowity Koszt Serwisu (est.)', `${totalServiceCost} PLN`],
-                ],
-                theme: 'striped',
-                headStyles: { fillColor: [41, 128, 185] },
-                styles: { fontSize: 10, cellPadding: 3 },
-                columnStyles: { 0: { fontStyle: 'bold', width: 80 } }
-            });
-
-            let finalY = doc.lastAutoTable.finalY + 10;
-            if (finalY + 80 > 280) {
-                doc.addPage();
-                finalY = 20;
-            }
-
-            doc.text('Analiza Kosztów (6m):', 14, finalY);
-            doc.addImage(chartImg, 'PNG', 14, finalY + 5, 180, 90);
-
-            finalY += 105;
-            if (finalY + 20 > 280) {
-                doc.addPage();
-                finalY = 20;
-            }
-
-            doc.setFontSize(12);
-            doc.setTextColor(0);
-            doc.text('Podsumowanie Techniczne:', 14, finalY);
-            doc.setFontSize(10);
-            doc.setTextColor(80);
-            doc.text([
-                'Pojazd wykazuje stabilne koszty eksploatacji. Wtórna analiza przebiegu wskazuje na',
-                'konieczność częstszych przeglądów układu hamulcowego w nadchodzącym kwartale.',
-                'Zalecana weryfikacja płynów eksploatacyjnych.'
-            ], 14, finalY + 6);
-
-            doc.save(`Raport_Pojazd_${name}.pdf`);
+        finalY += 105;
+        if (finalY + 20 > 280) {
+            doc.addPage();
+            finalY = 20;
         }
 
-        async function generateDriverReport(name, city, status, employmentDate) {
-            const doc = new jsPDF();
-            const hoursDriven = Math.floor(Math.random() * (2500 - 1000) + 1000);
-            const safetyScore = Math.floor(Math.random() * (100 - 80) + 80);
-            const tripsCompleted = Math.floor(Math.random() * (300 - 50) + 50);
+        doc.setFontSize(12);
+        doc.setTextColor(0);
+        doc.text('Podsumowanie Techniczne:', 14, finalY);
+        doc.setFontSize(10);
+        doc.setTextColor(80);
+        doc.text([
+            'Pojazd wykazuje stabilne koszty eksploatacji. Wtórna analiza przebiegu wskazuje na',
+            'konieczność częstszych przeglądów układu hamulcowego w nadchodzącym kwartale.',
+            'Zalecana weryfikacja płynów eksploatacyjnych.'
+        ], 14, finalY + 6);
 
-            const chartImg = await generateChartImage(
-                ['T1', 'T2', 'T3', 'T4', 'T5', 'T6'],
-                [85, 88, 92, 90, 89, safetyScore],
-                'Ocena Bezpieczeństwa (0-100)',
-                'rgba(46, 204, 113, 0.6)'
-            );
+        doc.save(`Raport_Pojazd_${name}.pdf`);
+    }
 
-            doc.setFontSize(22);
-            doc.text(`Raport Kierowcy: ${name}`, 14, 20);
+    async function generateDriverReport(name, city, status, employmentDate) {
+        const doc = new jsPDF();
+        const hoursDriven = Math.floor(Math.random() * (2500 - 1000) + 1000);
+        const safetyScore = Math.floor(Math.random() * (100 - 80) + 80);
+        const tripsCompleted = Math.floor(Math.random() * (300 - 50) + 50);
 
-            doc.setFontSize(10);
-            doc.setTextColor(100);
-            doc.text(`Data: ${new Date().toLocaleDateString()}`, 14, 26);
-            doc.text(`ID Raportu: #${Math.floor(Math.random() * 10000)}`, 14, 31);
+        const chartImg = await generateChartImage(
+            ['T1', 'T2', 'T3', 'T4', 'T5', 'T6'],
+            [85, 88, 92, 90, 89, safetyScore],
+            'Ocena Bezpieczeństwa (0-100)',
+            'rgba(46, 204, 113, 0.6)'
+        );
 
-            doc.setDrawColor(200);
-            doc.line(14, 35, 196, 35);
+        doc.setFontSize(22);
+        doc.text(`Raport Kierowcy: ${name}`, 14, 20);
 
-            doc.autoTable({
-                startY: 40,
-                head: [['Parametr', 'Wartość']],
-                body: [
-                    ['Lokalizacja Bazy', city],
-                    ['Data Zatrudnienia', employmentDate],
-                    ['Aktualny Status', status],
-                    ['Godziny za kierownicą', hoursDriven],
-                    ['Ukończone Trasy', tripsCompleted],
-                    ['Średnia Ocena Bezpieczeństwa', `${safetyScore}/100`],
-                    ['Kwalifikacje', 'Kat. B, C+E, ADR'],
-                ],
-                theme: 'striped',
-                headStyles: { fillColor: [39, 174, 96] },
-                styles: { fontSize: 10, cellPadding: 3 },
-                columnStyles: { 0: { fontStyle: 'bold', width: 80 } }
-            });
+        doc.setFontSize(10);
+        doc.setTextColor(100);
+        doc.text(`Data: ${new Date().toLocaleDateString()}`, 14, 26);
+        doc.text(`ID Raportu: #${Math.floor(Math.random() * 10000)}`, 14, 31);
 
-            let finalY = doc.lastAutoTable.finalY + 10;
-            if (finalY + 80 > 280) {
-                doc.addPage();
-                finalY = 20;
-            }
+        doc.setDrawColor(200);
+        doc.line(14, 35, 196, 35);
 
-            doc.text('Historia Bezpieczeństwa:', 14, finalY);
-            doc.addImage(chartImg, 'PNG', 14, finalY + 5, 180, 90);
+        doc.autoTable({
+            startY: 40,
+            head: [['Parametr', 'Wartość']],
+            body: [
+                ['Lokalizacja Bazy', city],
+                ['Data Zatrudnienia', employmentDate],
+                ['Aktualny Status', status],
+                ['Godziny za kierownicą', hoursDriven],
+                ['Ukończone Trasy', tripsCompleted],
+                ['Średnia Ocena Bezpieczeństwa', `${safetyScore}/100`],
+                ['Kwalifikacje', 'Kat. B, C+E, ADR'],
+            ],
+            theme: 'striped',
+            headStyles: { fillColor: [39, 174, 96] },
+            styles: { fontSize: 10, cellPadding: 3 },
+            columnStyles: { 0: { fontStyle: 'bold', width: 80 } }
+        });
 
-            finalY += 105;
-            if (finalY + 20 > 280) {
-                doc.addPage();
-                finalY = 20;
-            }
-
-            doc.setFontSize(12);
-            doc.setTextColor(0);
-            doc.text('Ocena HR:', 14, finalY);
-            doc.setFontSize(10);
-            doc.setTextColor(80);
-            doc.text([
-                `Kierowca ${name} utrzymuje wysoki standard bezpieczeństwa.`,
-                'Regularność tras i punktualność na poziomie 98%.',
-                'Brak zastrzeżeń co do eksploatacji powierzonego mienia.'
-            ], 14, finalY + 6);
-
-            doc.save(`Raport_Kierowca_${name.replace(' ', '_')}.pdf`);
+        let finalY = doc.lastAutoTable.finalY + 10;
+        if (finalY + 80 > 280) {
+            doc.addPage();
+            finalY = 20;
         }
-    </script>
-</body>
 
-</html>
+        doc.text('Historia Bezpieczeństwa:', 14, finalY);
+        doc.addImage(chartImg, 'PNG', 14, finalY + 5, 180, 90);
+
+        finalY += 105;
+        if (finalY + 20 > 280) {
+            doc.addPage();
+            finalY = 20;
+        }
+
+        doc.setFontSize(12);
+        doc.setTextColor(0);
+        doc.text('Ocena HR:', 14, finalY);
+        doc.setFontSize(10);
+        doc.setTextColor(80);
+        doc.text([
+            `Kierowca ${name} utrzymuje wysoki standard bezpieczeństwa.`,
+            'Regularność tras i punktualność na poziomie 98%.',
+            'Brak zastrzeżeń co do eksploatacji powierzonego mienia.'
+        ], 14, finalY + 6);
+
+        doc.save(`Raport_Kierowca_${name.replace(' ', '_')}.pdf`);
+    }
+</script>
+
+<?php include 'partials/footer.php'; ?>

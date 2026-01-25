@@ -1,149 +1,107 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php
+$pageTitle = "Stitch Design";
+$extraStyles = ['/public/styles/dashboard.css'];
+include 'partials/header.php';
+?>
 
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link crossorigin="" href="https://fonts.gstatic.com/" rel="preconnect" />
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-    <title>Stitch Design</title>
-    <link href="data:image/x-icon;base64," rel="icon" type="image/x-icon" />
-    <link rel="stylesheet" href="public/styles/dashboard.css">
-</head>
+<div class="content-container">
+    <div class="page-header">
+        <h1 class="page-title">Fleet Overview</h1>
+        <p class="page-subtitle">Monitor the status of your vehicles and upcoming maintenance.</p>
+    </div>
 
-<body>
-    <div class="app-container">
-        <div class="main-wrapper">
-            <header class="top-header">
-                <div class="logo-section">
-                    <div class="logo-icon">
-                        <svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z"></path>
-                            <path d="M12 12L2 7"></path>
-                            <path d="M12 12L22 7"></path>
-                            <path d="M12 12V22"></path>
-                            <path d="M7 4.5L17 9.5"></path>
-                        </svg>
-                    </div>
-                    <h2 class="logo-text">Fleet Manager</h2>
+    <div class="stats-grid">
+        <!-- Card 1 -->
+        <div class="stat-card">
+            <div class="stat-content">
+                <div class="stat-icon green">
+                    <span class="material-symbols-outlined"> directions_car </span>
                 </div>
-                <div class="header-actions">
-                    <nav class="main-nav">
-                        <a class="nav-link active" href="/dashboard">Dashboard</a>
-                        <a class="nav-link" href="/vehicles">Pojazdy</a>
-                        <a class="nav-link" href="/drivers">Kierowcy</a>
-                        <a class="nav-link" href="/maintenance">Utrzymanie</a>
-                        <a class="nav-link" href="#">Raporty</a>
-                    </nav>
-                    <div class="user-actions">
-                        <a href="/reminders" class="btn-icon" style="text-decoration: none; color: inherit;">
-                            <span class="material-symbols-outlined"> notifications </span>
-                        </a>
-                        <a href="/user" class="btn-icon" style="text-decoration: none; color: inherit;">
-                            <span class="material-symbols-outlined">account_circle</span>
-                        </a>
-                    </div>
+                <div class="stat-info">
+                    <p>Available Vehicles</p>
+                    <p>
+                        <?= $stats['wolny'] ?? 0 ?>
+                    </p>
                 </div>
-            </header>
-            <main class="content-area">
-                <div class="content-container">
-                    <div class="page-header">
-                        <h1 class="page-title">Fleet Overview</h1>
-                        <p class="page-subtitle">Monitor the status of your vehicles and upcoming maintenance.</p>
-                    </div>
+            </div>
+        </div>
 
-                    <div class="stats-grid">
-                        <!-- Card 1 -->
-                        <div class="stat-card">
-                            <div class="stat-content">
-                                <div class="stat-icon green">
-                                    <span class="material-symbols-outlined"> directions_car </span>
-                                </div>
-                                <div class="stat-info">
-                                    <p>Available Vehicles</p>
-                                    <p>
-                                        <?= $stats['wolny'] ?? 0 ?>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Card 2 -->
-                        <div class="stat-card">
-                            <div class="stat-content">
-                                <div class="stat-icon blue">
-                                    <span class="material-symbols-outlined"> local_shipping </span>
-                                </div>
-                                <div class="stat-info">
-                                    <p>Vehicles in Transit</p>
-                                    <p>
-                                        <?= $stats['w trasie'] ?? 0 ?>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Card 3 -->
-                        <div class="stat-card">
-                            <div class="stat-content">
-                                <div class="stat-icon amber">
-                                    <span class="material-symbols-outlined"> build </span>
-                                </div>
-                                <div class="stat-info">
-                                    <p>Vehicles in Service</p>
-                                    <p>
-                                        <?= $stats['serwis'] ?? 0 ?>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="section-header">
-                        <h2 class="section-title">Upcoming Maintenance</h2>
-                        <div class="table-container">
-                            <div class="table-wrapper">
-                                <table class="data-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Vehicle</th>
-                                            <th>Type</th>
-                                            <th>Next Service</th>
-                                            <th>Estimated Cost</th>
-                                            <th>Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php if(isset($vehicles)): ?>
-                                        <?php foreach ($vehicles as $vehicle): ?>
-                                        <tr>
-                                            <td class="font-medium">
-                                                <?= $vehicle['name']; ?>
-                                            </td>
-                                            <td class="text-muted">
-                                                <?= $vehicle['type']; ?>
-                                            </td>
-                                            <td class="text-muted">
-                                                <?= $vehicle['next_service_date']; ?>
-                                            </td>
-                                            <td class="text-muted">$
-                                                <?= $vehicle['estimated_service_cost']; ?>
-                                            </td>
-                                            <td class="text-muted">
-                                                <?= $vehicle['status']; ?>
-                                            </td>
-                                        </tr>
-                                        <?php endforeach; ?>
-                                        <?php endif; ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
+        <!-- Card 2 -->
+        <div class="stat-card">
+            <div class="stat-content">
+                <div class="stat-icon blue">
+                    <span class="material-symbols-outlined"> local_shipping </span>
                 </div>
-            </main>
+                <div class="stat-info">
+                    <p>Vehicles in Transit</p>
+                    <p>
+                        <?= $stats['w trasie'] ?? 0 ?>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="stat-card">
+            <div class="stat-content">
+                <div class="stat-icon amber">
+                    <span class="material-symbols-outlined"> build </span>
+                </div>
+                <div class="stat-info">
+                    <p>Vehicles in Service</p>
+                    <p>
+                        <?= $stats['serwis'] ?? 0 ?>
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
-</body>
 
-</html>
+    <div class="section-header">
+        <h2 class="section-title">Upcoming Maintenance</h2>
+        <div class="table-container">
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Vehicle</th>
+                            <th>Description</th>
+                            <th>Date</th>
+                            <th>Cost</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php if(isset($upcomingMaintenances)): ?>
+                        <?php foreach ($upcomingMaintenances as $maintenance): ?>
+                        <tr>
+                            <td class="font-medium">
+                                <?= $maintenance['vehicle_name']; ?>
+                            </td>
+                            <td class="text-muted">
+                                <?= $maintenance['description']; ?>
+                            </td>
+                            <td class="text-muted">
+                                <?= $maintenance['maintenance_date']; ?>
+                            </td>
+                            <td class="text-muted">
+                                <?= $maintenance['cost']; ?> PLN
+                            </td>
+                            <td class="text-muted">
+                                <?= $maintenance['status']; ?>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                        <?php else: ?>
+                        <tr>
+                            <td colspan="5" class="text-center">No upcoming maintenance found.</td>
+                        </tr>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php include 'partials/footer.php'; ?>

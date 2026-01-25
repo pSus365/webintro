@@ -1,109 +1,112 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php
+$pageTitle = "Stitch Design - Utrzymanie";
+include 'partials/header.php';
+?>
 
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link crossorigin="" href="https://fonts.gstatic.com/" rel="preconnect" />
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-    <title>Stitch Design - Utrzymanie</title>
-    <link href="data:image/x-icon;base64," rel="icon" type="image/x-icon" />
-    <link rel="stylesheet" href="public/styles/maintenance.css">
-</head>
+<div class="page-header-row">
+    <h1 class="page-title">Utrzymanie Pojazdów</h1>
+    <a href="/maintenance/stats" class="btn-primary" style="text-decoration: none;">
+        <span class="material-symbols-outlined" style="font-size: 1.25rem;">bar_chart</span>
+        <span>Pokaż statystyki</span>
+    </a>
+</div>
 
-<body>
-    <div class="app-container">
-        <div class="main-wrapper">
-            <!-- Header (Reused) -->
-            <header class="top-header">
-                <div class="logo-section">
-                    <div class="logo-icon">
-                        <svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z"></path>
-                            <path d="M12 12L2 7"></path>
-                            <path d="M12 12L22 7"></path>
-                            <path d="M12 12V22"></path>
-                            <path d="M7 4.5L17 9.5"></path>
-                        </svg>
-                    </div>
-                    <h2 class="logo-text">Fleet Manager</h2>
-                </div>
-                <div class="header-actions">
-                    <nav class="main-nav">
-                        <a class="nav-link" href="/dashboard">Dashboard</a>
-                        <a class="nav-link" href="/vehicles">Pojazdy</a>
-                        <a class="nav-link" href="/drivers">Kierowcy</a>
-                        <a class="nav-link active" href="/maintenance">Utrzymanie</a>
-                        <a class="nav-link" href="/raports">Raporty</a>
-                    </nav>
-                    <div class="user-actions">
-                        <a href="/reminders" class="btn-icon" style="text-decoration: none; color: inherit;">
-                            <span class="material-symbols-outlined"> notifications </span>
+<!-- Vehicles Status Table (Existing) -->
+<h2 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem; color: var(--text-dark);">Stan Techniczny Pojazdów
+</h2>
+<div class="table-container" style="margin-bottom: 3rem;">
+    <div class="table-wrapper">
+        <table class="vehicles-table">
+            <thead>
+                <tr>
+                    <th>Pojazd</th>
+                    <th>Typ</th>
+                    <th>Status</th>
+                    <th>Przebieg</th>
+                    <th>Planowany Przegląd</th>
+                    <th>Przewidywany Koszt</th>
+                    <th>Akcje</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if(isset($vehicles)): ?>
+                <?php foreach ($vehicles as $vehicle): ?>
+                <tr>
+                    <td class="text-dark font-medium">
+                        <?= htmlspecialchars($vehicle['name']); ?>
+                    </td>
+                    <td>
+                        <?= htmlspecialchars($vehicle['type']); ?>
+                    </td>
+                    <td>
+                        <span class="status-badge <?= strtolower(str_replace(' ', '-', $vehicle['status'])); ?>">
+                            <?= htmlspecialchars($vehicle['status']); ?>
+                        </span>
+                    </td>
+                    <td>
+                        <?= htmlspecialchars($vehicle['mileage']); ?> km
+                    </td>
+                    <td>
+                        <?= htmlspecialchars($vehicle['next_service_date']); ?>
+                    </td>
+                    <td>
+                        <?= htmlspecialchars($vehicle['estimated_service_cost']); ?> PLN
+                    </td>
+                    <td>
+                        <a href="/add-maintenance?vehicle_id=<?= $vehicle['id']; ?>" class="action-btn edit"
+                            style="text-decoration: none;">
+                            + Dodaj serwis
                         </a>
-                        <a href="/user" class="btn-icon" style="text-decoration: none; color: inherit;">
-                            <span class="material-symbols-outlined">account_circle</span>
-                        </a>
-                    </div>
-                </div>
-            </header>
-
-            <main class="content-area">
-                <div class="page-header-row">
-                    <h1 class="page-title">Utrzymanie Pojazdów</h1>
-                    <a href="/maintenance/stats" class="btn-primary" style="text-decoration: none;">
-                        <span class="material-symbols-outlined" style="font-size: 1.25rem;">bar_chart</span>
-                        <span>Pokaż statystyki</span>
-                    </a>
-                </div>
-
-                <div class="table-container">
-                    <div class="table-wrapper">
-                        <table class="vehicles-table">
-                            <thead>
-                                <tr>
-                                    <th>Pojazd</th>
-                                    <th>Typ</th>
-                                    <th>Status</th>
-                                    <th>Przebieg</th>
-                                    <th>Planowany Przegląd</th>
-                                    <th>Przewidywany Koszt</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php if(isset($vehicles)): ?>
-                                <?php foreach ($vehicles as $vehicle): ?>
-                                <tr>
-                                    <td class="text-dark font-medium">
-                                        <?= $vehicle['name']; ?>
-                                    </td>
-                                    <td>
-                                        <?= $vehicle['type']; ?>
-                                    </td>
-                                    <td>
-                                        <span
-                                            class="status-badge <?= strtolower(str_replace(' ', '-', $vehicle['status'])); ?>">
-                                            <?= $vehicle['status']; ?>
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <?= $vehicle['mileage']; ?> km
-                                    </td>
-                                    <td>
-                                        <?= $vehicle['next_service_date']; ?>
-                                    </td>
-                                    <td>
-                                        <?= $vehicle['estimated_service_cost']; ?> PLN
-                                    </td>
-                                </tr>
-                                <?php endforeach; ?>
-                                <?php endif; ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </main>
-        </div>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+                <?php endif; ?>
+            </tbody>
+        </table>
     </div>
-</body>
+</div>
 
-</html>
+<!-- Maintenance History Table (New) -->
+<h2 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem; color: var(--text-dark);">Historia Serwisowa</h2>
+<div class="table-container">
+    <div class="table-wrapper">
+        <table class="vehicles-table">
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Pojazd</th>
+                    <th>Opis</th>
+                    <th>Koszt</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if(isset($maintenances)): ?>
+                <?php foreach ($maintenances as $record): ?>
+                <tr>
+                    <td>
+                        <?= htmlspecialchars($record['maintenance_date']); ?>
+                    </td>
+                    <td class="text-dark font-medium">
+                        <?= htmlspecialchars($record['vehicle_name']); ?>
+                    </td>
+                    <td>
+                        <?= htmlspecialchars($record['description']); ?>
+                    </td>
+                    <td>
+                        <?= htmlspecialchars($record['cost']); ?> PLN
+                    </td>
+                    <td>
+                        <span class="status-badge <?= $record['status'] === 'completed' ? 'active' : 'service' ?>">
+                            <?= htmlspecialchars($record['status']); ?>
+                        </span>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<?php include 'partials/footer.php'; ?>

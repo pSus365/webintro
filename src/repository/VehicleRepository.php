@@ -37,6 +37,72 @@ class VehicleRepository extends Repository
         return $stats;
     }
 
+    public function getUpcomingMaintenances(int $limit = 5): array
+    {
+        $stmt = $this->database->connect()->prepare("
+            SELECT m.*, v.name as vehicle_name 
+            FROM maintenances m
+            JOIN vehicles v ON m.vehicle_id = v.id
+            ORDER BY m.maintenance_date ASC
+            LIMIT :limit
+        ");
+        $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function addMaintenance(array $maintenance): void
+    {
+        $stmt = $this->database->connect()->prepare('
+            INSERT INTO maintenances (vehicle_id, description, cost, maintenance_date, status)
+            VALUES (?, ?, ?, ?, ?)
+        ');
+        $stmt->execute([
+            $maintenance['vehicle_id'],
+            $maintenance['description'],
+            $maintenance['cost'],
+            $maintenance['maintenance_date'],
+            $maintenance['status']
+        ]);
+    }
+
+    public function getAllMaintenances(): array
+    {
+        // For the full maintenance history table
+        $stmt = $this->database->connect()->prepare('
+            SELECT m.*, v.name as vehicle_name, v.type as vehicle_type 
+            FROM maintenances m
+            JOIN vehicles v ON m.vehicle_id = v.id
+            ORDER BY m.maintenance_date DESC
+        ');
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function updateVehicleServiceInfo(int $vehicleId, string $nextServiceDate, float $estimatedCost)
+    {
+        $stmt = $this->database->connect()->prepare('
+            UPDATE vehicles 
+            SET next_service_date = ?, estimated_service_cost = ?, status = ?
+            WHERE id = ?
+        ');
+        // Setting status to 'wolny' assuming maintenance is future planning, OR keep existing status?
+        // Let's keep existing status by reading it first OR just updating specific fields.
+        // Actually, requirement says "Update reminders". Reminders use next_service_date.
+        // Let's safe update only service fields.
+
+        $stmt = $this->database->connect()->prepare('
+            UPDATE vehicles 
+            SET next_service_date = ?, estimated_service_cost = ?
+            WHERE id = ?
+        ');
+        $stmt->execute([
+            $nextServiceDate,
+            $estimatedCost,
+            $vehicleId
+        ]);
+    }
+
     public function getVehicle(int $id)
     {
         $stmt = $this->database->connect()->prepare('

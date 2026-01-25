@@ -1,129 +1,77 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php
+$pageTitle = "Stitch Design - Profil Użytkownika";
+$extraStyles = ['/public/styles/user.css'];
+include 'partials/header.php';
+?>
 
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link crossorigin="" href="https://fonts.gstatic.com/" rel="preconnect" />
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-    <title>Stitch Design - Profil Użytkownika</title>
-    <link href="data:image/x-icon;base64," rel="icon" type="image/x-icon" />
-    <link rel="stylesheet" href="/public/styles/user.css">
+<div class="page-header-row">
+    <h1 class="page-title">Witaj,
+        <?= $user['name'] ?>!
+    </h1>
+</div>
 
-</head>
+<div class="profile-container">
+    <!-- Left: Profile Card -->
+    <div class="profile-card">
+        <div class="profile-avatar-lg" style="background-image: url('<?= $user['avatar_url'] ?>');">
+        </div>
+        <h2 class="profile-name">
+            <?= $user['name'] . ' ' . $user['surname'] ?>
+        </h2>
+        <p class="profile-email">
+            <?= $user['email'] ?>
+        </p>
 
-<body>
-    <div class="app-container">
-        <div class="main-wrapper">
-            <!-- Header (Reused) -->
-            <header class="top-header">
-                <div class="logo-section">
-                    <div class="logo-icon">
-                        <svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z"></path>
-                            <path d="M12 12L2 7"></path>
-                            <path d="M12 12L22 7"></path>
-                            <path d="M12 12V22"></path>
-                            <path d="M7 4.5L17 9.5"></path>
-                        </svg>
-                    </div>
-                    <h2 class="logo-text">Fleet Manager</h2>
-                </div>
-                <div class="header-actions">
-                    <nav class="main-nav">
-                        <a class="nav-link" href="/dashboard">Dashboard</a>
-                        <a class="nav-link" href="/vehicles">Pojazdy</a>
-                        <a class="nav-link" href="/drivers">Kierowcy</a>
-                        <a class="nav-link" href="/maintenance">Utrzymanie</a>
-                        <a class="nav-link" href="/raports">Raporty</a>
-                    </nav>
-                    <div class="user-actions">
-                        <a href="/reminders" class="btn-icon" style="text-decoration: none; color: inherit;">
-                            <span class="material-symbols-outlined"> notifications </span>
-                        </a>
-                        <a href="/user" class="btn-icon" style="text-decoration: none; color: inherit;">
-                            <span class="material-symbols-outlined">account_circle</span>
-                        </a>
-                    </div>
-                </div>
-            </header>
+        <form action="/user/upload-avatar" method="POST" enctype="multipart/form-data">
+            <div class="upload-btn-wrapper">
+                <button class="btn-upload">Zmień zdjęcie</button>
+                <input type="file" name="avatar" onchange="this.form.submit()" />
+            </div>
+        </form>
+    </div>
 
-            <main class="content-area">
-                <div class="page-header-row">
-                    <h1 class="page-title">Witaj,
-                        <?= $user['name'] ?>!
-                    </h1>
-                </div>
+    <!-- Right: Settings -->
+    <div class="settings-card">
+        <h3 class="section-title">Edytuj Profil</h3>
+        <form action="/user/update" method="POST">
+            <div class="form-group">
+                <label class="form-label">Imię</label>
+                <input type="text" name="name" class="form-input" value="<?= $user['name'] ?>">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Nazwisko</label>
+                <input type="text" name="surname" class="form-input" value="<?= $user['surname'] ?>">
+            </div>
+            <!-- Readonly Email -->
+            <div class="form-group">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-input" value="<?= $user['email'] ?>" disabled
+                    style="background-color: var(--bg-light); color: var(--text-muted);">
+            </div>
 
-                <div class="profile-container">
-                    <!-- Left: Profile Card -->
-                    <div class="profile-card">
-                        <div class="profile-avatar-lg" style="background-image: url('<?= $user['avatar_url'] ?>');">
-                        </div>
-                        <h2 class="profile-name">
-                            <?= $user['name'] . ' ' . $user['surname'] ?>
-                        </h2>
-                        <p class="profile-email">
-                            <?= $user['email'] ?>
-                        </p>
+            <button type="submit" class="btn-primary">Zapisz zmiany</button>
+        </form>
 
-                        <form action="/user/upload-avatar" method="POST" enctype="multipart/form-data">
-                            <div class="upload-btn-wrapper">
-                                <button class="btn-upload">Zmień zdjęcie</button>
-                                <input type="file" name="avatar" onchange="this.form.submit()" />
-                            </div>
-                        </form>
-                    </div>
+        <h3 class="section-title" style="margin-top: 3rem;">Inne Opcje</h3>
+        <form action="/user/password" method="POST">
+            <div class="form-group">
+                <label class="form-label">Nowe hasło</label>
+                <input type="password" name="password" class="form-input" placeholder="Wpisz nowe hasło">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Potwierdź nowe hasło</label>
+                <input type="password" name="repeatedPassword" class="form-input" placeholder="Powtórz nowe hasło">
+            </div>
+            <button type="submit" class="btn-primary" style="margin-bottom: 2rem;">Zmień hasło</button>
+        </form>
 
-                    <!-- Right: Settings -->
-                    <div class="settings-card">
-                        <h3 class="section-title">Edytuj Profil</h3>
-                        <form action="/user/update" method="POST">
-                            <div class="form-group">
-                                <label class="form-label">Imię</label>
-                                <input type="text" name="name" class="form-input" value="<?= $user['name'] ?>">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Nazwisko</label>
-                                <input type="text" name="surname" class="form-input" value="<?= $user['surname'] ?>">
-                            </div>
-                            <!-- Readonly Email -->
-                            <div class="form-group">
-                                <label class="form-label">Email</label>
-                                <input type="email" class="form-input" value="<?= $user['email'] ?>" disabled
-                                    style="background-color: var(--bg-light); color: var(--text-muted);">
-                            </div>
-
-                            <button type="submit" class="btn-primary">Zapisz zmiany</button>
-                        </form>
-
-                        <h3 class="section-title" style="margin-top: 3rem;">Inne Opcje</h3>
-                        <form action="/user/password" method="POST">
-                            <div class="form-group">
-                                <label class="form-label">Nowe hasło</label>
-                                <input type="password" name="password" class="form-input"
-                                    placeholder="Wpisz nowe hasło">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Potwierdź nowe hasło</label>
-                                <input type="password" name="repeatedPassword" class="form-input"
-                                    placeholder="Powtórz nowe hasło">
-                            </div>
-                            <button type="submit" class="btn-primary" style="margin-bottom: 2rem;">Zmień hasło</button>
-                        </form>
-
-                        <div style="border-top: 1px solid var(--border-color); padding-top: 2rem;">
-                            <a href="/logout" class="btn-primary"
-                                style="background-color: var(--red-text); text-decoration: none; display: inline-block; text-align: center;">
-                                Wyloguj się
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-            </main>
+        <div style="border-top: 1px solid var(--border-color); padding-top: 2rem;">
+            <a href="/logout" class="btn-primary"
+                style="background-color: var(--red-text); text-decoration: none; display: inline-block; text-align: center;">
+                Wyloguj się
+            </a>
         </div>
     </div>
-</body>
+</div>
 
-</html>
+<?php include 'partials/footer.php'; ?>
