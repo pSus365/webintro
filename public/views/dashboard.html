@@ -67,7 +67,9 @@ include 'partials/header.php';
                             <th>Vehicle</th>
                             <th>Description</th>
                             <th>Date</th>
+                            <?php if ($isAdmin): ?>
                             <th>Cost</th>
+                            <?php endif; ?>
                             <th>Status</th>
                         </tr>
                     </thead>
@@ -84,9 +86,11 @@ include 'partials/header.php';
                             <td class="text-muted">
                                 <?= $maintenance['maintenance_date']; ?>
                             </td>
+                            <?php if ($isAdmin): ?>
                             <td class="text-muted">
                                 <?= $maintenance['cost']; ?> PLN
                             </td>
+                            <?php endif; ?>
                             <td class="text-muted">
                                 <?= $maintenance['status']; ?>
                             </td>

@@ -43,8 +43,10 @@
                             href="/dashboard">Dashboard</a>
                         <a class="nav-link <?= (strpos($_SERVER['REQUEST_URI'], '/vehicles') !== false) ? 'active' : '' ?>"
                             href="/vehicles">Pojazdy</a>
-                        <a class="nav-link <?= (strpos($_SERVER['REQUEST_URI'], '/drivers') !== false) ? 'active' : '' ?>"
-                            href="/drivers">Kierowcy</a>
+                        <?php if ($isAdmin): ?>
+                            <a class="nav-link <?= (strpos($_SERVER['REQUEST_URI'], '/drivers') !== false) ? 'active' : '' ?>"
+                                href="/drivers">Kierowcy</a>
+                        <?php endif; ?>
                         <a class="nav-link <?= (strpos($_SERVER['REQUEST_URI'], '/maintenance') !== false) ? 'active' : '' ?>"
                             href="/maintenance">Utrzymanie</a>
                         <a class="nav-link <?= (strpos($_SERVER['REQUEST_URI'], '/raports') !== false) ? 'active' : '' ?>"

@@ -15,6 +15,12 @@ class DriverController extends AppController
 
     public function index()
     {
+        if (!$this->isAdmin()) {
+            $url = "http://$_SERVER[HTTP_HOST]";
+            header("Location: {$url}/dashboard");
+            return;
+        }
+
         $drivers = $this->driverRepository->getDrivers();
         $filter = $_GET['filter'] ?? 'all';
 
@@ -44,6 +50,12 @@ class DriverController extends AppController
 
     public function addDriver()
     {
+        if (!$this->isAdmin()) {
+            $url = "http://$_SERVER[HTTP_HOST]";
+            header("Location: {$url}/dashboard");
+            return;
+        }
+
         if ($this->isPost()) {
             $driver = [
                 'first_name' => $_POST['first_name'],
@@ -65,6 +77,12 @@ class DriverController extends AppController
 
     public function editDriver()
     {
+        if (!$this->isAdmin()) {
+            $url = "http://$_SERVER[HTTP_HOST]";
+            header("Location: {$url}/dashboard");
+            return;
+        }
+
         if ($this->isPost()) {
             $id = $_POST['id'];
             $driver = [
@@ -89,6 +107,12 @@ class DriverController extends AppController
 
     public function deleteDriver()
     {
+        if (!$this->isAdmin()) {
+            $url = "http://$_SERVER[HTTP_HOST]";
+            header("Location: {$url}/dashboard");
+            return;
+        }
+
         if ($this->isPost()) {
             $id = $_POST['id'];
             $this->driverRepository->deleteDriver($id);

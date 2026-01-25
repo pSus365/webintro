@@ -24,6 +24,7 @@ class AppController
         if ($path !== $templatePath404) {
             // Auto-escape variables for XSS protection
             $variables = $this->secureData($variables);
+            $variables['isAdmin'] = $this->isAdmin(); // Inject role check for views
 
             extract($variables);
             // $message = "Bledne haslo lub email";
@@ -60,5 +61,13 @@ class AppController
             return htmlspecialchars($data, ENT_QUOTES, 'UTF-8');
         }
         return $data;
+    }
+
+    protected function isAdmin(): bool
+    {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+        return isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin';
     }
 }
