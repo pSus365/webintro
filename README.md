@@ -4,7 +4,7 @@
 
 ---
 
-## 📖 O Projekcie
+## O Projekcie
 
 **Fleet Manager** to zaawansowana aplikacja internetowa stworzona w celu cyfryzacji procesów zarządzania flotą w przedsiębiorstwach transportowych. System rozwiązuje kluczowe problemy logistyczne, takie jak:
 - Brak centralnej ewidencji pojazdów i kierowców.
@@ -16,7 +16,7 @@ Aplikacja została zaprojektowana z naciskiem na **bezpieczeństwo**, **skalowal
 
 ---
 
-## 🛠 Technologie
+## Technologie
 
 Projekt wykorzystuje nowoczesny stos technologiczny zapewniający stabilność i łatwość wdrażania:
 
@@ -31,7 +31,7 @@ Projekt wykorzystuje nowoczesny stos technologiczny zapewniający stabilność i
 
 ---
 
-## 🏗 Architektura Systemu
+## Architektura Systemu
 
 System oparty jest na autorskim frameworku implementującym wzorzec **Model-View-Controller (MVC)**. Zastosowano wzorzec **Front Controller**, gdzie cały ruch kierowany jest do jednego punktu wejścia (`index.php`), który następnie dispatchuje żądania.
 
@@ -62,7 +62,7 @@ graph TD
 
 ---
 
-## 💾 Struktura Bazy Danych
+## Struktura Bazy Danych
 
 Baza danych została zaprojektowana w 3. postaci normalnej (3NF) dla zapewnienia integralności.
 
@@ -95,7 +95,7 @@ erDiagram
 
 ---
 
-## 🛡 Bezpieczeństwo (Security Features)
+## Bezpieczeństwo (Security Features)
 
 Aplikacja implementuje wielowarstwowe zabezpieczenia, czyniąc ją odporną na najczęstsze ataki webowe (zgodnie z OWASP Top 10).
 
@@ -123,7 +123,7 @@ Hasła nigdy nie są przechowywane jawnym tekstem. System używa silnego algoryt
 
 ---
 
-## 🚀 Instalacja i Uruchomienie
+## Instalacja i Uruchomienie
 
 Projekt jest w pełni skonteneryzowany. Wymagany jest tylko zainstalowany **Docker Desktop**.
 
@@ -148,7 +148,7 @@ Aplikacja dostępna jest pod adresem: **http://localhost:8080**
 
 ---
 
-## 📝 Funkcjonalności dla Użytkownika
+## Funkcjonalności dla Użytkownika
 
 ### 1. Dashboard Analityczny
 Szybki podgląd stanu floty:
@@ -172,7 +172,8 @@ Szybki podgląd stanu floty:
 
 ---
 
-## 👨‍💻 Autor
+## Autor
 Autor: pSus365
 Projekt wykonany w ramach zaliczenia przedmiotu Projektowanie Aplikacji Internetowych.
+
 Wszelkie prawa zastrzeżone.
