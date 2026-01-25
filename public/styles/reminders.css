@@ -56,16 +56,60 @@ body {
 }
 
 /* Header */
+/* Header - Responsive */
+/* Header - Responsive Refined */
 .top-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0.75rem 2.5rem;
-    /* py-3 px-10 */
     border-bottom: 1px solid var(--border-color);
     background-color: var(--bg-light);
-    /* Assuming header matches bg or white, code says nothing specific so likely inherited or transparent */
     white-space: nowrap;
+    position: relative;
+}
+
+@media (max-width: 768px) {
+    .top-header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0.75rem 1rem;
+        padding-right: 4rem;
+        /* Space for user actions */
+        gap: 0.5rem;
+    }
+
+    .logo-section {
+        width: 100%;
+        margin-bottom: 0.25rem;
+    }
+
+    .header-actions {
+        width: 100%;
+        display: block;
+        /* Reset flex */
+    }
+
+    .user-actions {
+        position: absolute;
+        top: 0.75rem;
+        right: 1rem;
+        margin: 0;
+    }
+
+    .main-nav {
+        display: flex;
+        width: 100%;
+        overflow-x: auto;
+        padding-bottom: 0.5rem;
+        gap: 1.5rem;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+
+    .main-nav::-webkit-scrollbar {
+        display: none;
+    }
 }
 
 .logo-section {
@@ -152,7 +196,19 @@ body {
 .content-area {
     flex: 1;
     padding: 2.5rem 10rem;
-    /* py-10 px-40 */
+    transition: padding 0.3s;
+}
+
+@media (max-width: 1024px) {
+    .content-area {
+        padding: 2rem 4rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .content-area {
+        padding: 1.5rem 1rem;
+    }
 }
 
 .content-container {

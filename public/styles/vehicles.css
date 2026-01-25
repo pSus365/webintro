@@ -59,6 +59,8 @@ body {
 
 /* Reuse Header Styles (copied for standalone capability if this file is loaded alone, 
    ideally this should be in a shared common.css) */
+/* Header - Responsive */
+/* Header - Responsive Refined */
 .top-header {
     display: flex;
     align-items: center;
@@ -67,6 +69,50 @@ body {
     border-bottom: 1px solid var(--border-color);
     background-color: var(--bg-light);
     white-space: nowrap;
+    position: relative;
+}
+
+@media (max-width: 768px) {
+    .top-header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0.75rem 1rem;
+        padding-right: 4rem;
+        /* Space for user actions */
+        gap: 0.5rem;
+    }
+
+    .logo-section {
+        width: 100%;
+        margin-bottom: 0.25rem;
+    }
+
+    .header-actions {
+        width: 100%;
+        display: block;
+        /* Reset flex */
+    }
+
+    .user-actions {
+        position: absolute;
+        top: 0.75rem;
+        right: 1rem;
+        margin: 0;
+    }
+
+    .main-nav {
+        display: flex;
+        width: 100%;
+        overflow-x: auto;
+        padding-bottom: 0.5rem;
+        gap: 1.5rem;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+
+    .main-nav::-webkit-scrollbar {
+        display: none;
+    }
 }
 
 .logo-section {
@@ -152,6 +198,19 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     width: 100%;
+    transition: padding 0.3s;
+}
+
+@media (max-width: 1024px) {
+    .content-area {
+        padding: 2rem 4rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .content-area {
+        padding: 1.5rem 1rem;
+    }
 }
 
 .page-header-row {
@@ -160,6 +219,22 @@ body {
     justify-content: space-between;
     gap: 1rem;
     margin-bottom: 2rem;
+}
+
+@media (max-width: 640px) {
+    .page-header-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .page-title {
+        font-size: 1.5rem;
+    }
+
+    .btn-primary {
+        width: 100%;
+    }
 }
 
 .page-title {

@@ -19,6 +19,18 @@
     align-items: center;
 }
 
+@media (max-width: 480px) {
+    .login-content {
+        padding: 1.5rem;
+        border: none;
+        box-shadow: none;
+        background-color: transparent;
+        /* Seamless look on mobile if desired, or keep white */
+        background-color: var(--card-bg);
+        /* Keep card look but smaller padding */
+    }
+}
+
 .login-form {
     display: flex;
     flex-direction: column;
