@@ -27,99 +27,111 @@ Projekt wykorzystuje nowoczesny stos technologiczny zapewniający stabilność i
 | **Frontend** | **HTML5, CSS3, JS** | Responsywny interfejs (RWD), wykresy Chart.js. |
 | **Serwer WWW** | **Nginx** | Wydajny serwer HTTP obsługujący żądania. |
 | **Konteneryzacja** | **Docker & Compose** | Pełna izolacja środowiska i łatwy deployment. |
-| **Narzędzia** | **Git, pgAdmin** | Kontrola wersji i zarządzanie bazą danych. |
+| **Testy** | **PHPUnit** | Automatyczne testy jednostkowe i integracyjne. |
 
 ---
 
-## Architektura Systemu
+## Funkcjonalności
 
-System oparty jest na autorskim frameworku implementującym wzorzec **Model-View-Controller (MVC)**. Zastosowano wzorzec **Front Controller**, gdzie cały ruch kierowany jest do jednego punktu wejścia (`index.php`), który następnie dispatchuje żądania.
+### 1. Panel Administratora (Dashboard)
+- Szybki podgląd stanu floty (dostępne/zajęte pojazdy).
+- Statystyki kosztów serwisowych.
+- Powiadomienia o zbliżających się przeglądach.
 
-### Diagram Przepływu Danych
+### 2. Zarządzanie Rolami (RBAC)
+- **Admin**: Pełny dostęp do wszystkich funkcjonalności (edycja, dodawanie, usuwanie).
+- **Kierowca (Driver)**: Ograniczony dostęp (podgląd listy pojazdów, zmiana statusu, zgłaszanie usterek).
 
-```mermaid
-graph TD
-    User((Użytkownik)) -->|Żądanie HTTP| Nginx[Serwer Nginx]
-    Nginx -->|Przekazanie| Routing["Routing (index.php)"]
-    Routing -->|Wybór trasy| Controller[Kontroler]
-    
-    subgraph "Warstwa Aplikacji (PHP)"
-    Controller -->|Pobierz dane| Repository[Repozytorium]
-    Repository -->|SQL Query| Database[("PostgreSQL")]
-    Database -->|Wynik| Repository
-    Repository -->|Obiekt Modelu| Controller
-    Controller -->|Dane + Szablon| View["Widok (HTML/PHP)"]
-    end
-    
-    View -->|Odpowiedź HTML| User
-```
+### 3. Ewidencja Pojazdów
+- Pełna kartoteka pojazdu (marka, model, przebieg, status).
+- Historia serwisowa i koszty napraw.
+- Śledzenie terminów badań technicznych.
 
-### Komponenty Architektury
-1.  **Routing**: Centralny mechanizm mapowania adresów URL na akcje kontrolerów (np. `/vehicles` -> `VehicleController::index`).
-2.  **Kontrolery (`src/controllers`)**: Odpowiadają za logikę biznesową, walidację danych wejściowych i sterowanie przepływem.
-3.  **Repozytoria (`src/repository`)**: Warstwa abstrakcji bazy danych. Oddziela logikę SQL od logiki aplikacji, ułatwiając testowanie i zmiany bazy.
-4.  **Widoki (`public/views`)**: Warstwa prezentacji, dynamicznie renderująca HTML na podstawie danych z kontrolera.
+### 4. Baza Kierowców
+- Dane personalne i historia zatrudnienia.
+- Status dostępności kierowcy.
+
+### 5. Moduł Finansowy i Raporty
+- Wykresy kosztów utrzymania floty.
+- Symulator prognozowania wydatków.
+
+### 6. Bezpieczeństwo
+- Ochrona przed atakami **SQL Injection** (Prepared Statements).
+- Ochrona przed **XSS** (Sanityzacja danych wyjściowych).
+- Bezpieczne sesje (**HttpOnly**, **SameSite**).
+- Własny system routingu z obsługą błędów 400/403/404/500.
 
 ---
 
-## Struktura Bazy Danych
+## Struktura Bazy Danych (ERD)
 
 Baza danych została zaprojektowana w 3. postaci normalnej (3NF) dla zapewnienia integralności.
 
 ```mermaid
 erDiagram
-    USERS {
+    users {
         int id PK
-        string email UK
-        string password "Hashed (Bcrypt)"
-        string name
-        string surname
+        varchar name
+        varchar surname
+        varchar email
+        varchar password
+        varchar avatar_url
+        varchar role "Default: driver"
     }
-    VEHICLES {
+
+    user_settings {
         int id PK
-        string name
-        string type
+        int user_id FK
+        varchar theme "Default: light"
+        boolean notifications_enabled "Default: true"
+    }
+
+    vehicles {
+        int id PK
+        varchar name
+        varchar type
         int mileage
         date next_service_date
         decimal estimated_service_cost
-        string status "Enum: w trasie, wolny, serwis"
+        varchar status "wolny, w trasie, serwis"
     }
-    DRIVERS {
+
+    drivers {
         int id PK
-        string first_name
-        string last_name
+        varchar first_name
+        varchar last_name
         date birth_date
-        string status "Enum: wolny, w trasie, L4"
+        varchar city
+        varchar street
+        varchar house_number
+        date employment_date
+        varchar status
     }
+
+    assignments {
+        int id PK
+        int vehicle_id FK
+        int driver_id FK
+        timestamp start_date
+        timestamp end_date
+        varchar status
+    }
+
+    maintenances {
+        int id PK
+        int vehicle_id FK
+        text description
+        date maintenance_date
+        decimal cost
+        varchar status
+        text notes
+    }
+
+    users ||--|| user_settings : "has"
+    vehicles ||--o{ assignments : "has history"
+    drivers ||--o{ assignments : "is assigned"
+    vehicles ||--o{ maintenances : "undergoes"
 ```
-
----
-
-## Bezpieczeństwo (Security Features)
-
-Aplikacja implementuje wielowarstwowe zabezpieczenia, czyniąc ją odporną na najczęstsze ataki webowe (zgodnie z OWASP Top 10).
-
-### 1. Ochrona przed SQL Injection
-**Problem**: Wstrzyknięcie złośliwego kodu SQL przez formularze.
-**Rozwiązanie**: Wszystkie zapytania wykorzystują **Prepared Statements** (PDO). Dane są przesyłane oddzielnie od zapytania, co fizycznie uniemożliwia zmianę struktury SQL przez użytkownika.
-```php
-// Przykład z kodu (VehicleRepository.php)
-$stmt = $this->database->connect()->prepare('INSERT INTO vehicles (...) VALUES (?, ?, ...)')
-$stmt->execute([$name, $type, ...]); // Dane są bezpiecznie bindowane
-```
-
-### 2. Ochrona przed XSS (Cross-Site Scripting)
-**Problem**: Wstrzyknięcie skryptów JS do przeglądarki ofiary.
-**Rozwiązanie**: Automatyczna sanityzacja danych wyjściowych w `AppController`. Każda zmienna trafiająca do widoku jest przepuszczana przez `htmlspecialchars()`.
-
-### 3. Pancerne Sesje (Session Hardening)
-Sesje są skonfigurowane tak, aby zminimalizować ryzyko przejęcia (Session Hijacking):
-- **HttpOnly**: Ciasteczko sesyjne jest niedostępne dla JavaScript (ochrona przed kradzieżą via XSS).
-- **SameSite=Strict**: Ciasteczka nie są wysyłane przy linkach z innych stron (ochrona przed CSRF).
-- **Secure**: Wymuszenie HTTPS (w środowisku produkcyjnym).
-
-### 4. Bezpieczne Uwierzytelnianie
-Hasła nigdy nie są przechowywane jawnym tekstem. System używa silnego algorytmu haszowania (Bcrypt/Argon2) przy rejestracji. Logowanie weryfikuje hash, a nie czysty tekst.
 
 ---
 
@@ -142,33 +154,26 @@ docker-compose up -d --build
 ### Krok 3: Dostęp
 Aplikacja dostępna jest pod adresem: **http://localhost:8080**
 
-### Domyślne Dane Logowania
-### Domyślne Dane Logowania
-*(Dane usunięte ze względów bezpieczeństwa)*
+Po uruchomieniu aplikacja automatycznie wykona migrację struktury bazy danych (w tym dodanie ról użytkowników).
 
 ---
 
-## Funkcjonalności dla Użytkownika
+## Testy
 
-### 1. Dashboard Analityczny
-Szybki podgląd stanu floty:
-- Liczba dostępnych pojazdów vs. pojazdy w trasie.
-- Alerty o zbliżających się przeglądach (poniżej 30 dni).
-- Wykresy kosztów w czasie rzeczywistym.
+Projekt posiada zaimplementowane testy automatyczne wykorzystujące **PHPUnit**.
+Zakres testów obejmuje:
+- **Testy Jednostkowe**: Weryfikacja logiki biznesowej (np. Singleton w `UserRepository`).
+- **Testy Integracyjne**: Sprawdzenie dostępności endpointów i statusów HTTP (200, 404).
 
-### 2. Ewidencja Pojazdów
-- Dodawanie nowych pojazdów ze specyfikacją (przebieg, typ, koszt serwisu).
-- Edycja statusów (np. zmiana na "w trasie").
-- Usuwanie pojazdów z floty.
+### Uruchamianie Testów
 
-### 3. Moduł Finansowy (Maintenance)
-- `maintenance_stats.php`: Dedykowany widok z wykresami (Chart.js).
-- Symulator kosztów: Kalkulator pozwalający przewidzieć koszty utrzymania floty w horyzoncie 6-12 miesięcy, uwzględniając inflację.
+Aby uruchomić testy, wykonaj poniższą komendę w terminalu (będąc w katalogu głównym projektu):
 
-### 4. Panel Użytkownika
-- Zarządzanie profilem.
-- Zmiana hasła.
-- Upload awatara (z walidacją typu pliku).
+```bash
+docker exec -i webintro-php-1 php /app/vendor/bin/phpunit /app/tests
+```
+
+Komenda ta uruchamia PHPUnit wewnątrz kontenera PHP, wykonując wszystkie testy zdefiniowane w katalogu `tests/`.
 
 ---
 
