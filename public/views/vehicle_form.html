@@ -1,6 +1,5 @@
 <?php
-$pageTitle = "Stitch Design - " . (($action === 'edit') ? 'Edytuj Pojazd' : 'Dodaj Pojazd');
-$extraStyles = ['/public/styles/vehicles.css'];
+$pageTitle = "Fleet Manager - " . (($action === 'edit') ? 'Edytuj Pojazd' : 'Dodaj Pojazd');
 include 'partials/header.php';
 ?>
 
@@ -64,7 +63,7 @@ include 'partials/header.php';
             </select>
         </div>
 
-        <button type="submit" class="btn-primary" style="margin-top: 1rem; w-full: 100%;">
+        <button type="submit" class="btn-primary" style="margin-top: 1rem; width: 100%;">
             <?= ($action === 'edit') ? 'Zapisz zmiany' : 'Dodaj pojazd' ?>
         </button>
     </form>
