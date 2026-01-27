@@ -57,52 +57,83 @@ include 'partials/header.php';
         </div>
     </div>
 
-    <div class="section-header">
-        <h2 class="section-title">Upcoming Maintenance</h2>
-        <div class="table-container">
-            <div class="table-wrapper">
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Vehicle</th>
-                            <th>Description</th>
-                            <th>Date</th>
-                            <?php if ($isAdmin): ?>
-                            <th>Cost</th>
+    <div class="dashboard-columns">
+        <!-- Main Column: Maintenance -->
+        <div class="main-column">
+            <div class="section-header section-header-compact">
+                <h2 class="section-title">Upcoming Maintenance</h2>
+            </div>
+            <div class="table-container" style="margin-top: 0;">
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Vehicle</th>
+                                <th>Description</th>
+                                <th>Date</th>
+                                <?php if ($isAdmin): ?>
+                                <th>Cost</th>
+                                <?php endif; ?>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php if(isset($upcomingMaintenances)): ?>
+                            <?php foreach ($upcomingMaintenances as $maintenance): ?>
+                            <tr>
+                                <td class="font-medium">
+                                    <?= $maintenance['vehicle_name']; ?>
+                                </td>
+                                <td class="text-muted">
+                                    <?= $maintenance['description']; ?>
+                                </td>
+                                <td class="text-muted">
+                                    <?= $maintenance['maintenance_date']; ?>
+                                </td>
+                                <?php if ($isAdmin): ?>
+                                <td class="text-muted">
+                                    <?= $maintenance['cost']; ?> PLN
+                                </td>
+                                <?php endif; ?>
+                                <td class="text-muted">
+                                    <?= $maintenance['status']; ?>
+                                </td>
+                            </tr>
+                            <?php endforeach; ?>
+                            <?php else: ?>
+                            <tr>
+                                <td colspan="5" class="text-center">No upcoming maintenance found.</td>
+                            </tr>
                             <?php endif; ?>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php if(isset($upcomingMaintenances)): ?>
-                        <?php foreach ($upcomingMaintenances as $maintenance): ?>
-                        <tr>
-                            <td class="font-medium">
-                                <?= $maintenance['vehicle_name']; ?>
-                            </td>
-                            <td class="text-muted">
-                                <?= $maintenance['description']; ?>
-                            </td>
-                            <td class="text-muted">
-                                <?= $maintenance['maintenance_date']; ?>
-                            </td>
-                            <?php if ($isAdmin): ?>
-                            <td class="text-muted">
-                                <?= $maintenance['cost']; ?> PLN
-                            </td>
-                            <?php endif; ?>
-                            <td class="text-muted">
-                                <?= $maintenance['status']; ?>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
-                        <?php else: ?>
-                        <tr>
-                            <td colspan="5" class="text-center">No upcoming maintenance found.</td>
-                        </tr>
-                        <?php endif; ?>
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Side Column: Fuel Prices -->
+        <div class="side-column">
+            <div class="section-header section-header-compact">
+                <h2 class="section-title">Fuel Prices</h2>
+            </div>
+            <div class="fuel-list">
+                <?php foreach ($fuelPrices as $type => $price): ?>
+                <div class="stat-card fuel-card">
+                    <div class="stat-content">
+                        <div class="stat-icon gray">
+                            <span class="material-symbols-outlined"> local_gas_station </span>
+                        </div>
+                        <div class="stat-info">
+                            <p>
+                                <?= $type ?>
+                            </p>
+                            <p>
+                                <?= $price ?> PLN
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <?php endforeach; ?>
             </div>
         </div>
     </div>

@@ -182,3 +182,70 @@ Autor: pSus365
 Projekt wykonany w ramach zaliczenia przedmiotu Projektowanie Aplikacji Internetowych.
 
 Wszelkie prawa zastrzeżone.
+
+---
+
+## Realizacja Projektu
+
+Poniżej znajduje się lista zrealizowanych funkcjonalności oraz wymagań projektowych:
+
+### Architektura i Technologie
+- [x] **Architektura Aplikacji**: Wzorzec MVC (Model-View-Controller) z podziałem na Frontend i Backend.
+- [x] **Kod Obiektowy**: Backend napisany w pełni obiektowo (Klasy, Dziedziczenie, Interfejsy).
+- [x] **Baza Danych**: PostgreSQL - relacyjna baza danych.
+- [x] **Diagram ERD**: Struktura bazy danych została zaprojektowana i udokumentowana.
+- [x] **GIT**: Wykorzystanie systemu kontroli wersji.
+- [x] **Eksport Bazy**: Dostępny plik zrzutu bazy danych (`.sql`).
+- [x] **Technologie Webowe**: HTML, CSS (Design), PHP, JavaScript.
+
+### Funkcjonalności
+- [x] **Logowanie i Sesje**: Bezpieczny system uwierzytelniania użytkowników.
+- [x] **Uprawnienia i Role**:
+    - Obsługa co najmniej dwóch ról: **Administrator** i **Kierowca**.
+    - Ograniczony dostęp do zasobów w zależności od roli.
+- [x] **Bezpieczeństwo**:
+    - Ochrona przed SQL Injection (Prepared Statements).
+    - Walidacja danych wejściowych.
+- [x] **Złożoność Bazy Danych**: Wykorzystanie widoków oraz relacji między tabelami.
+- [x] **Responsywność (RWD)**: Aplikacja dostosowana do urządzeń mobilnych i desktopowych.
+- [x] **Wylogowywanie**: Poprawne niszczenie sesji użytkownika.
+
+### Dodatkowe Osiągnięcia
+- [x] **Generowanie Raportów PDF**: Implementacja biblioteki `jsPDF` do tworzenia raportów dla pojazdów i kierowców.
+- [x] **Wizualizacja Danych**: Integracja z `Chart.js` do generowania wykresów statystycznych w raportach.
+
+---
+
+## Scenariusze Testowe
+
+Poniżej przedstawiono przykładowe scenariusze testowe weryfikujące poprawność działania kluczowych funkcjonalności:
+
+### 1. Logowanie do Systemu
+**Cel**: Weryfikacja poprawności procesu uwierzytelniania.
+1. Wejdź na stronę główną.
+2. Spróbuj przejść do `/dashboard` bez logowania -> Oczekiwane przekierowanie do `/login`.
+3. Wprowadź niepoprawne dane -> Oczekiwany komunikat błędu.
+4. Wprowadź poprawne dane administratora -> Przekierowanie do panelu głównego.
+
+### 2. Zarządzanie Pojazdami (CRUD)
+**Cel**: Weryfikacja możliwości edycji floty.
+1. Zaloguj się jako Administrator.
+2. Przejdź do zakładki "Pojazdy".
+3. Wybierz opcję dodania nowego pojazdu.
+4. Uzupełnij formularz i zapisz -> Pojazd powinien pojawić się na liście.
+5. Zmień status pojazdu na "W serwisie" -> Status powinien zaktualizować się w bazie i na widoku.
+
+### 3. Generowanie Raportu PDF
+**Cel**: Sprawdzenie funkcji eksportu danych.
+1. Przejdź do zakładki "Raporty".
+2. Wybierz pojazd z listy i kliknij "Generuj PDF".
+3. System powinien pobrać plik PDF zawierający:
+    - Dane pojazdu.
+    - Tabelę kosztów/przebiegu.
+    - Wygenerowany wykres (Chart.js).
+
+### 4. Weryfikacja Uprawnień
+**Cel**: Sprawdzenie izolacji ról.
+1. Zaloguj się jako Kierowca.
+2. Spróbuj usunąć pojazd lub innego użytkownika.
+3. System powinien zablokować akcję lub ukryć przyciski administracyjne.

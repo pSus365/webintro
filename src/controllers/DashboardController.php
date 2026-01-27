@@ -19,10 +19,19 @@ class DashboardController extends AppController
         $stats = $this->vehicleRepository->getStatistics();
         $upcomingMaintenances = $this->vehicleRepository->getUpcomingMaintenances();
 
+        // Mock data for fuel prices
+        $fuelPrices = [
+            'Pb95' => 6.45,
+            'Pb98' => 6.98,
+            'ON' => 6.59,
+            'LPG' => 2.85
+        ];
+
         $this->render('dashboard', [
             'vehicles' => $vehicles,
             'stats' => $stats,
-            'upcomingMaintenances' => $upcomingMaintenances
+            'upcomingMaintenances' => $upcomingMaintenances,
+            'fuelPrices' => $fuelPrices
         ]);
     }
 }

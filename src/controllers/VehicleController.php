@@ -76,28 +76,6 @@ class VehicleController extends AppController
 
     public function editVehicle()
     {
-        // Drivers allowed to change status? User said "Can change status". 
-        // But the form allows editing everything. 
-        // For now, let's keep full edit for admins only, or implement partial edit.
-        // User said: "He can also change the status of the car."
-        // We might need a specific 'updateStatus' route or allow edit but checking fields.
-        // Simplest: Allow edit for everyone but maybe restrict fields in VIEW? 
-        // Or better: Allow edit if admin. If driver, maybe only status logic?
-        // Let's protect full edit for now and trust the view hiding. 
-        // Actually, preventing unauthorized edits is better.
-
-        // If it's a POST status update only (e.g. from main list), allow it.
-        // But editVehicle handles the full form.
-        // Let's wrap full edit capability with admin check. 
-        // We will add a separate method or handled logic for just status update if needed.
-        // Given 'editVehicle' is the full form, detailed editing should probably be admin only.
-        // But wait, "Can change status". 
-        // Let's assume for now he uses the same form or a quick action.
-        // If he uses the form, we should allow it if he is a driver?
-        // "Driver ... can change status of the car".
-        // Let's allowing entering editVehicle for now, but we will deal with UI hiding.
-
-        // Actually, locking `deleteVehicle` is most important.
         if ($this->isPost()) {
             $id = $_POST['id'];
             $name = $_POST['name'];
